@@ -174,12 +174,12 @@ Referencias:
 **Documentos:**
 Este es el término que MongoDB utiliza para denominar a lo que sería un registro en una tabla de una DB relacional. Como vimos, estos pueden contener distinta estructura y atributos con respecto a otros documentos de su mismo tipo. Supongamos los siguientes Documentos de dos usuarios válidos en una misma colección:
 Usuario 1:
-```json
+json
 {
     "nombre": "Juan",
     "email": "juan@email.com",
     "ciudad": "Buenos Aires",
     "fechaNacimiento": new Date("20/1/2021"),
     "ban": false
-}```
+}
 asd
