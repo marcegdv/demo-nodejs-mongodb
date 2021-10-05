@@ -166,7 +166,8 @@ Para eliminar una base de datos, primero debes switchear a la base de datos con 
 
 Referencias:
 ------------
-* NodeJS - https://nodejs.org/es/
-* ExpressJS - https://expressjs.com/es/
-* MongoDB - https://www.mongodb.com/es
-* Manual driver MongoDB para NodeJS - https://docs.mongodb.com/drivers/node/current/
+* **NodeJS** - https://nodejs.org/es/
+* **ExpressJS** - https://expressjs.com/es/
+* **MongoDB** - https://www.mongodb.com/es
+* **Manual** driver MongoDB para NodeJS - https://docs.mongodb.com/drivers/node/current/
+* **Nodemon** - Utilidad para desarrollo. Permite reiniciar la ejecución de tu proyecto cada vez que guardes un cambio en un archivo. Instalalo globalmente con: **npm install -g nodemon** o como una dependencia de desarrollo: **npm install --save-dev nodemon**
