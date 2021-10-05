@@ -198,7 +198,7 @@ export const dbDropCollection = async (collection) => {
     }
 }
 
-const dbDrop = async (database) => {
+export const dbDrop = async (database) => {
     try {
         const result = await mdbClient().db(database).dropDatabase();
         mdbStatus.last.database = database;
@@ -262,6 +262,10 @@ const mdbName = () => {
     return mdbStatus.database;
 }
 
+const mdbSetName = (databaseName) => {
+    mdbStatus.database = databaseName;
+}
+
 const mdbClient = () => {
     return mdbStatus.client;
 }
@@ -274,7 +278,7 @@ const mdbIsLocal = () => {
     return mdbStatus.isLocal;
 }
 
-const mdbSetAtlas = () => {
+export const mdbSetAtlas = () => {
     const mdbUser = process.env.DB_USER_NAME;
     const mdbPass = process.env.DB_USER_PASSWORD;
     const mdbCluster = process.env.DB_CLUSTER_NAME;
@@ -288,7 +292,7 @@ const mdbSetAtlas = () => {
     mdbStatus.database = 'mercado';
     mdbStatus.connection.url = mdbUrl;
 }
-const mdbSetLocal = () => {
+export const mdbSetLocal = () => {
     const mdbUrl = 'mongodb://127.0.0.1:27017';
     const local = new MongoClient(mdbUrl);
     mdbStatus.client = local;

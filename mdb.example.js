@@ -17,13 +17,12 @@ const mdbName = process.env.DB_NAME;
 const mdbOptions = process.env.DB_OPTIONS;
 //Connection URL
 const url = 'mongodb+srv://' + mdbUser + ':' + mdbPass + '@' + mdbCluster + '.' + mdbClusterUrl + '/' + mdbName + '?' + mdbOptions;
-console.log('MDN URL:', url);
 //Client for MongoDB Atlas server
 const atlas = new MongoClient(url);
 
 //-------------------------------------------------------------------------------[ Connect ] -----
 export const dbConnect = async () => {
-    console.log('Connecting to MongoDB Atlas server...', url);
+    console.log('Connecting to MongoDB Atlas server...');
     try {
         await atlas.connect();
         console.log('Connected successfully to MongoDB Atlas.');
@@ -36,7 +35,7 @@ export const dbConnect = async () => {
 
 //-------------------------------------------------------------------------------[ Disconnect ] -----
 export const dbDisconnect = async () => {
-    console.log('Closing connection to MongoDB Atlas...', url);
+    console.log('Closing connection to MongoDB Atlas...');
     try {
         await atlas.close();
         console.log('Connection closed.');
@@ -219,4 +218,4 @@ async function main() {
     await dbDisconnect();
 }
 
-//main();
+main();
