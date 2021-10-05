@@ -347,11 +347,9 @@ export const dbAccess = async (crud, collection, param1, param2, param3) => {
     return result;
 }
 
-/*
-//----- [ Test configs ] -----
 const test = async () => {
-    mdbSetAtlas();
-    //mdbSetLocal();
+    const usarConfigAtlas = true;
+    usarConfigAtlas ? mdbSetAtlas() : mdbSetLocal();
     try {
         const collection = 'test';
         const product = {
@@ -396,5 +394,4 @@ const test = async () => {
     await dbDisconnect();
     console.log('Desconexión completa.');
 }
-test();
-*/
+//test();
