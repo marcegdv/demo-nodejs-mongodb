@@ -62,6 +62,7 @@ MongoDB guarda los Documentos en Colecciones. Es ahí donde se realizaran las cr
 De esta forma asegura que cada Documento tenga un identificador único.
 
 MongoDB - Atlas - Tu base de datos en la nube ☁️ 
+---------------------------------------------
 
 ¿No tenes un buen hardware o host donde instalar tu MongoDB? ¡No importa! MongoDB Atlas es la solución que nos ofrece MongoDB para que te desligues un poco de instalar y administrar algunas tareas al momento de tener tu base de datos, ¡y en la nube!
 Por el momento, dirigiéndote a la página oficial de MongoDB, sólo tienes que entrar a la sección referida a Atlas para acceder a este servicio que tiene una opción gratis. Claro que te pedirá que te registres, completando unos pocos datos, y que confirmes a través del e-mail que hayas indicado. Luego puedes acceder al plan Free el cual ofrece recursos reducidos que son suficientes para dar los primeros pasos y aprender cómo utilizar tu primer cluster, con 512Mb de espacio para almacenar datos (y otros límites como cantidad de conexiones, bases de datos, colecciones).
