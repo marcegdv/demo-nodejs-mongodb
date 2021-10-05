@@ -86,7 +86,6 @@ show collections: Muestra las colecciones creadas en la base de datos actual.
 Principales comandos para realizar operaciones CRUD (Create/Read/Update/Delete):
 
 * Crear/Insertar (Create)
--------------------------
 
 db.unaColeccion.insert({"clave":"valor", ...}): Inserta en la colección unaColeccion un documento. Si la colección no existe, crea la colección e inserta el documento. Recordemos que MongoDB agrega una clave "_id" con una valor único para cada documento que insertemos, a menos que especifiquemos esa clave y le asignemos un valor, perdiendo cierta integridad en los datos que agrega autmáticamente MongoDB. O bien, podríamos programar nuestro propio identificador único para cada documento que insertemos.
 Hay variantes con respecto a este método de inserción, ya que insert() puede insertar un documento o un array de documentos, y dependiendo de esta condición, el documento que retorna el estado de la inserción puede tener diferente estructura, por lo que los siguientes comandos aseguran la misma estructura en el documento de retorno:
