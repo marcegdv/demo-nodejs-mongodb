@@ -150,7 +150,7 @@ db.productos.update({"tipo":"bebida","subtipo":"gaseosa"},{$set: {"precio":"100"
 db.productos.update({"tipo": "importados"}, {$inc: {"precio": -240}}) Incrementa un valor numérico (el valor que tenía + el indicado). En el ejemplo vemos que podemos decrementar utilizando números negativos.
 db.productos.update({"tipo": "carne"}, {$rename: {"vacuna": "ternera"}}) Cambia el nombre de una clave, en el ejemplo de vacuna a ternera.
 
-Quitar/Eliminar (Delete)
+🇩 Quitar/Eliminar (Delete)
 
 Existen dos métodos para eliminar documentos: deleteOne() y deleteMany(). Mediante un filtro, eliminará el documento que coincida con el filtro indicado. Puede ser una clave:valor o varias, ejemplos:
 db.productos.deleteOne({"nombre":"valde", "material": "metal"}) Eliminará el primer documento que encuentre con "nombre": "valde" y "material": "metal". Retornará un objeto con una clave booleana y un contador de documentos eliminados. Tambien esta el método deleteMany() que eliminará todos los documentos que coincidan con el filtro.
@@ -168,3 +168,4 @@ NodeJS - https://nodejs.org/es/
 ExpressJS - https://expressjs.com/es/
 MongoDB - https://www.mongodb.com/es
 Manual driver MongoDB para NodeJS - https://docs.mongodb.com/drivers/node/current/
+
