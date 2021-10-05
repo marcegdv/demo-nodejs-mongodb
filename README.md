@@ -163,6 +163,11 @@ Para eliminar todos los documentos de una colección: db.unaColeccion.remove({})
 Para eliminar una colección de la base de datos: db.unaColeccion.drop()
 Para eliminar una base de datos, primero debes switchear a la base de datos con el comando use <database_name>, y luego utilizar el comando db.dropDatabase().
 
+**Archivo .env:**
+Si ya tenes instalado NodeJS, con solo clonar el repositorio y desde la ubicación de la carpeta donde se encuentra el archivo package.json, ejecuta desde una consola el comando npm install para que se instalen las dependencias para que puedas hacer tus propias pruebas.
+Por último, crea un archivo .env (si, solo .env) de texto donde estarán las variables de entorno para conectar con MongoDB Atlas, el contenido del archivo es el siguiente:
+
+(estructura del .env)
 
 Referencias:
 ------------
