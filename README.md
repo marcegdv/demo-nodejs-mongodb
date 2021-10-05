@@ -164,8 +164,5 @@ Para eliminar una base de datos, primero debes switchear a la base de datos con 
 
 Referencias:
 ------------
-NodeJS - https://nodejs.org/es/
-ExpressJS - https://expressjs.com/es/
-MongoDB - https://www.mongodb.com/es
-Manual driver MongoDB para NodeJS - https://docs.mongodb.com/drivers/node/current/
+NodeJS - https://nodejs.org/es/ - ExpressJS - https://expressjs.com/es/ - MongoDB - https://www.mongodb.com/es - Manual driver MongoDB para NodeJS - https://docs.mongodb.com/drivers/node/current/
 
