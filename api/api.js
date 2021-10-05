@@ -1,7 +1,7 @@
 import express, { json } from 'express';
 //import cors from 'cors';
 import { PORT, HOST } from './environment.js';
-import { dbAccess } from './dataBase.js';
+import { dbAccess } from './database.js';
 
 const app = express();
 

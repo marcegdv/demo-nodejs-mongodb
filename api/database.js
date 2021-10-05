@@ -3,18 +3,6 @@ import { MongoClient, ObjectId } from 'mongodb';
 
 dotenvConfig();
 
-const mdbUser = process.env.DB_USER_NAME;
-const mdbPass = process.env.DB_USER_PASSWORD;
-const mdbCluster = process.env.DB_CLUSTER_NAME;
-const mdbClusterUrl = process.env.DB_CLUSTER_URL;
-const mdbDbName = process.env.DB_NAME;
-const mdbOptions = process.env.DB_OPTIONS;
-const mdbUrl = 'mongodb+srv://' + mdbUser + ':' + mdbPass + '@' + mdbCluster + '.' + mdbClusterUrl + '/' + mdbDbName + '?' + mdbOptions;
-const atlas = new MongoClient(mdbUrl);
-
-const mdbLocal = 'mongodb://127.0.0.1:27017';
-const local = new MongoClient(mdbLocal);
-
 export const mdbStatus = {
     client: {}, //atlas o mongo
     isAtlas: false,
@@ -35,7 +23,6 @@ export const mdbStatus = {
         action: '',
     },
 };
-mdbSetAtlas();
 
 //-------------------------------------------------------------------------------[ Connect ] -----
 export const dbConnect = async () => {
@@ -108,7 +95,25 @@ export const dbReadOne = async (collection, criteria) => {
 }
 
 export const dbReadById = async (collection, mdbObjectId) => {
-    return await dbRead(collection, { _id: ObjectId(mdbObjectId) });
+    return await dbReadOne(collection, { _id: ObjectId(mdbObjectId) });
+}
+
+export const dbCollections = async () => {
+    try {
+        const result = await mdbClient().db(mdbName()).listCollections().toArray();
+        return result;
+    } catch (error) {
+        mdbUpdateLastError(error, true);
+    }
+}
+
+export const dbShowCollections = async () => {
+    let collections = await dbCollections();
+    let result = [];
+    collections.forEach(collection => {
+        result.push(collection.name);
+    });
+    return result;
 }
 
 //-------------------------------------------------------------------------------[ Update ] -----
@@ -214,7 +219,7 @@ const mdbUpdateTimeout = () => {
     }
 }
 
-const mdbClearTimeout =() => {
+const mdbClearTimeout = () => {
     if (mdbStatus.connection.timeout) {
         clearTimeout(mdbStatus.connection.timeout);
         mdbStatus.connection.timeout = null;
@@ -269,6 +274,29 @@ const mdbIsLocal = () => {
     return mdbStatus.isLocal;
 }
 
+const mdbSetAtlas = () => {
+    const mdbUser = process.env.DB_USER_NAME;
+    const mdbPass = process.env.DB_USER_PASSWORD;
+    const mdbCluster = process.env.DB_CLUSTER_NAME;
+    const mdbClusterUrl = process.env.DB_CLUSTER_URL;
+    const mdbDbName = process.env.DB_NAME;
+    const mdbOptions = process.env.DB_OPTIONS;
+    const mdbUrl = 'mongodb+srv://' + mdbUser + ':' + mdbPass + '@' + mdbCluster + '.' + mdbClusterUrl + '/' + mdbDbName + '?' + mdbOptions;
+    const atlas = new MongoClient(mdbUrl);
+    mdbStatus.client = atlas;
+    mdbStatus.isAtlas = true;
+    mdbStatus.database = 'mercado';
+    mdbStatus.connection.url = mdbUrl;
+}
+const mdbSetLocal = () => {
+    const mdbUrl = 'mongodb://127.0.0.1:27017';
+    const local = new MongoClient(mdbUrl);
+    mdbStatus.client = local;
+    mdbStatus.isAtlas = false;
+    mdbStatus.database = 'unaDataBase';
+    mdbStatus.connection.url = mdbUrl;
+}
+
 export const dbAccess = async (crud, collection, param1, param2, param3) => {
     let result = null;
     try {
@@ -314,59 +342,58 @@ export const dbAccess = async (crud, collection, param1, param2, param3) => {
         }
     }
     catch (error) {
-        throw (error);
+        throw error;
     }
     return result;
 }
 
-const mdbSetAtlas = () => {
-    mdbStatus.client = atlas;
-    mdbStatus.isAtlas = true;
-    mdbStatus.database = 'mercado';
-    mdbStatus.connection.url = mdbUrl;
-}
-const mdbSetLocal = () => {
-    mdbStatus.client = local;
-    mdbStatus.isAtlas = false;
-    mdbStatus.database = 'unaDataBase';
-    mdbStatus.connection.url = mdbLocal;
-}
-/*
-const main = async () => {
-    const usarAtlas = true;
-    let collection = null;
-    if (!usarAtlas) {
-        mdbSetAtlas();
-        collection = 'productos';
-    } else {
-        mdbSetLocal();
-        collection = 'inventory';
-    }
+
+//----- [ Test configs ] -----
+const test = async () => {
+    mdbSetAtlas();
+    //mdbSetLocal();
     try {
-        console.log('Conectando con', mdbLocal);
+        const collection = 'test';
+        const product = {
+            nombre: 'Taza',
+            precio: 33,
+            stock: 14,
+        };
+        let result = null;
+        console.log('Iniciando test...\nConectando con ' + (mdbIsAtlas()?'MongoDB Atlas':'MongoDB Server') + '...');
         await dbConnect();
-        console.log('Conexión exitosa.');
-    }
-    catch (error) {
-        console.log('Conexión fallida:\n', error);
-        return;
-    }
-    try {
-        const result = await dbRead(collection,{});
-        console.log('Inventori:\n',result);
-    }
-    catch (error) {
-        console.log('Error al leer:\n', error);
-        return;
-    }
-    try {
-        console.log('Desconectando de',mdbLocal)
-        await dbDisconnect();
-        return;
+        console.log('Conexión establecida.');
+        console.log('Colecciones en la DB:\n  ['+await dbShowCollections()+']');
+        console.log('Insertando producto:\n  '+JSON.stringify(product));
+        result = await dbCreateOne(collection,product);
+        console.log('Resultado de la inserción:\n  '+JSON.stringify(result));
+        console.log('Colecciones en la DB:\n  ['+await dbShowCollections()+']');
+        let id = result.insertedId;
+        console.log('Buscando producto insertado (\"_id\":\"'+id+'\")');
+        result = await dbReadById(collection,id);
+        console.log('  '+JSON.stringify(result));
+        console.log('Modificando producto encontrado...');
+        result = await dbUpdateById(collection,result._id,{$set: {descripcion:'Lámpara'}});
+        console.log('Resultado de la modificación:\n  '+JSON.stringify(result));
+        result = await dbReadById(collection,id);
+        console.log('Producto:');
+        console.log('  '+JSON.stringify(result));
+        console.log('Eliminando el producto modificado (\"_id\":\"'+result._id+'\")');
+        result = await dbDeleteById(collection,result._id);
+        console.log('Resultado de la eliminación:\n  '+JSON.stringify(result));
+        console.log('Buscando producto eliminado (\"_id\":\"'+id+'\")');
+        result = await dbReadById(collection,id);
+        console.log('Resultado de la búsqueda (debería ser null): '+JSON.stringify(result));
+        console.log('Colecciones en la DB:\n  ['+await dbShowCollections()+']');
+        console.log('Elimnando la colección \"test\"...');
+        dbDropCollection(collection);
+        console.log('Colecciones en la DB:\n  ['+await dbShowCollections()+']');
+        console.log('Fin del test.');
     } catch (error) {
-        console.log('Desconexión fallida:\n', error);
-        return;
+        console.log('Error:\n', error);
     }
+    console.log('Desconectando...');
+    await dbDisconnect();
+    console.log('Desconexión completa.');
 }
-main();
-*/
+test();
