@@ -1,4 +1,5 @@
 MongoDB - Conceptos básicos
+---------------------------
 
 Es una base de datos del tipo NOSQL (not only SQL) por lo que los datos que almacena no tienen que cumplir un esquema predefinido.
 ¿Por qué utilizar MongoDB?
