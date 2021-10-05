@@ -83,7 +83,7 @@ show collections: Muestra las colecciones creadas en la base de datos actual.
 
 Principales comandos para realizar operaciones CRUD (Create/Read/Update/Delete):
 
-Crear/Insertar (Create)
+* Crear/Insertar (Create)
 
 db.unaColeccion.insert({"clave":"valor", ...}): Inserta en la colección unaColeccion un documento. Si la colección no existe, crea la colección e inserta el documento. Recordemos que MongoDB agrega una clave "_id" con una valor único para cada documento que insertemos, a menos que especifiquemos esa clave y le asignemos un valor, perdiendo cierta integridad en los datos que agrega autmáticamente MongoDB. O bien, podríamos programar nuestro propio identificador único para cada documento que insertemos.
 Hay variantes con respecto a este método de inserción, ya que insert() puede insertar un documento o un array de documentos, y dependiendo de esta condición, el documento que retorna el estado de la inserción puede tener diferente estructura, por lo que los siguientes comandos aseguran la misma estructura en el documento de retorno:
@@ -92,7 +92,7 @@ Como vimos, estos tres métodos retornan un documento indicando el resultado de 
 
 Nota: Insertar o crear un nuevo atributo para un documento se realiza con el método update(). 
 
-Leer (Read)
+* Leer (Read)
 
 db.unaColeccion.find(<filtro>[, <proyeccion>]): Buscar en la colección unaColeccion los documentos que coincidan con lo indicado en <filtro>. Si no se indica un filtrado, retornará todo el contenido de la colección, ejemplo: db.prductos.find(). Y el parámetro opcional <proyeccion> indica que atributos mostraremos de los documentos encontrados. Supongamos que realizamos la siguiente búsqueda en la colección productos de documentos que son de tipo bebidas que tienen los atributos: tipo, nombre, contenido y otros mas con el siguiente comando: db.productos.find({"tipo": "bebidas"}, "nombre": 1, "_id": 0), nos retornará todos los documentos de tipo bebida pero mostrando sólo el atributo nombre y ocultando el atributo _id. En la proyección solo se puede indicar que se va a mostrar o que se va a ocultar. El ejemplo dado es el único caso (que conozco por el momento) que se pueden hacer inclusiones y exclusiones de atributos a mostrar.
 
@@ -130,7 +130,7 @@ Buscar los documentos según un nombre de proveedor: db.productos.find({"proveed
 Buscar los documentos según uno o varios tags: db.productos.find({"tags": {$all: [ "limpieza", "plastico"]} })
 Buscar los documentos con tags específicos: db.productos.find({"tags": [ "limpieza", "lavanda"] }) 
 
-Actualizar (Update)
+* Actualizar (Update)
 
 Para actualizar un documento, MongoDB por lo menos necesita encontrarlo y saber que cambiar, por lo que la estructura básica de un update es:
 db.collection.update(<query>, <update>[, {options}])
@@ -150,7 +150,7 @@ db.productos.update({"tipo":"bebida","subtipo":"gaseosa"},{$set: {"precio":"100"
 db.productos.update({"tipo": "importados"}, {$inc: {"precio": -240}}) Incrementa un valor numérico (el valor que tenía + el indicado). En el ejemplo vemos que podemos decrementar utilizando números negativos.
 db.productos.update({"tipo": "carne"}, {$rename: {"vacuna": "ternera"}}) Cambia el nombre de una clave, en el ejemplo de vacuna a ternera.
 
-🇩 Quitar/Eliminar (Delete)
+* Quitar/Eliminar (Delete)
 
 Existen dos métodos para eliminar documentos: deleteOne() y deleteMany(). Mediante un filtro, eliminará el documento que coincida con el filtro indicado. Puede ser una clave:valor o varias, ejemplos:
 db.productos.deleteOne({"nombre":"valde", "material": "metal"}) Eliminará el primer documento que encuentre con "nombre": "valde" y "material": "metal". Retornará un objeto con una clave booleana y un contador de documentos eliminados. Tambien esta el método deleteMany() que eliminará todos los documentos que coincidan con el filtro.
