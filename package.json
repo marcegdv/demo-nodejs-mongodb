@@ -2,10 +2,10 @@
     "name": "nodejs-mongodb",
     "version": "1.0.0",
     "description": "Pequeño back-end en NodeJS para MongoDB.",
-    "main": "index.js",
+    "main": "",
     "scripts": {
-        "dev": "nodemon example",
-        "srv": "nodemon server",
+        "dev": "nodemon mdb.example.js",
+        "api": "nodemon ./api/api.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
