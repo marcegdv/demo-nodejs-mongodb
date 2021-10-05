@@ -347,7 +347,7 @@ export const dbAccess = async (crud, collection, param1, param2, param3) => {
     return result;
 }
 
-
+/*
 //----- [ Test configs ] -----
 const test = async () => {
     mdbSetAtlas();
@@ -397,3 +397,4 @@ const test = async () => {
     console.log('Desconexión completa.');
 }
 test();
+*/
