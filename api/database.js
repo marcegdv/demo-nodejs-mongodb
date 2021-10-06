@@ -344,11 +344,11 @@ export const dbAccess = async (crud, collection, param1, param2, param3) => {
         if (!mdbPersist()) {
             await dbDisconnect();
         }
+        return result;
     }
     catch (error) {
         throw error;
     }
-    return result;
 }
 
 const test = async () => {

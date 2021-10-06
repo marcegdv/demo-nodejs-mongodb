@@ -1,7 +1,7 @@
 import express, { json } from 'express';
 //import cors from 'cors';
 import { PORT, HOST } from './environment.js';
-import { dbAccess } from './database.js';
+import { dbAccess, mdbSetAtlas } from './database.js';
 
 const app = express();
 
@@ -9,6 +9,7 @@ const app = express();
 app.use(json());
 
 console.log('Initializing...');
+mdbSetAtlas();
 
 //---------------------------------------------------------------------------------[ Middlewares: Req ] -----
 app.post('*', (req, res, next) => {
