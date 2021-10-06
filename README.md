@@ -173,7 +173,22 @@ Para eliminar una base de datos, primero debes switchear a la base de datos con 
 Si ya tenes instalado NodeJS, con solo clonar el repositorio y desde la ubicación de la carpeta donde se encuentra el archivo package.json, ejecuta desde una consola el comando npm install para que se instalen las dependencias para que puedas hacer tus propias pruebas.
 Por último, crea un archivo .env (si, solo .env) de texto donde estarán las variables de entorno para conectar con MongoDB Atlas, el contenido del archivo es el siguiente:
 
-(estructura del .env)
+Contenido del archivo **.env**:
+```text
+## Environment variables for server.js
+NODE_ENV = 'development'
+HOST = '127.0.0.1'
+PORT = 3001
+
+## Environment variables for MongoDB Atlas connection:
+## mongodb+srv://<username>:<password>@<cluster>.<clusterUrl>/<dbName>?<options>
+DB_USER_NAME = <username>
+DB_USER_PASSWORD = <password>
+DB_CLUSTER_NAME = <cluster>
+DB_CLUSTER_URL = <clusterUrl>
+DB_NAME = <dbName>
+DB_OPTIONS = <options>
+```
 
 # Referencias:
 * **NodeJS** - https://nodejs.org/es/
