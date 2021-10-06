@@ -175,7 +175,7 @@ Por último, crea un archivo .env (si, solo .env) de texto donde estarán las va
 
 Contenido del archivo **.env**:
 ```text
-## Environment variables for server.js
+## Environment variables for api.js
 NODE_ENV = 'development'
 HOST = '127.0.0.1'
 PORT = 3001
