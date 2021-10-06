@@ -37,9 +37,11 @@ Usuario 1:
     "ciudad": "Buenos Aires",
     "fechaNacimiento": new Date("20/1/2021"),
     "ban": false
-}```
+}
+```
 
 Usuario 2:
+```json
 {
     "user": "perez",
     "pass": "12345Seis",
@@ -51,6 +53,7 @@ Usuario 2:
         "telefono": "1234567890"
     }
 }
+```
 
 Como se vio en el primer ejemplo de un usuario, MongoDB interpreta funciones de JavaScript.
 
