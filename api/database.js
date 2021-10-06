@@ -8,6 +8,7 @@ export const mdbStatus = {
     isAtlas: false,
     isLocal: false,
     database: '',
+    collection: '',
     connection: {
         url: '',
         status: false,
@@ -266,6 +267,14 @@ const mdbSetName = (databaseName) => {
     mdbStatus.database = databaseName;
 }
 
+const mdbSetCollection = (collection) => {
+    mdbStatus.collection = collection;
+}
+
+const mdbCollection = () => {
+    return mdbStatus.collection;
+}
+
 const mdbClient = () => {
     return mdbStatus.client;
 }
@@ -290,6 +299,7 @@ export const mdbSetAtlas = () => {
     mdbStatus.client = atlas;
     mdbStatus.isAtlas = true;
     mdbStatus.database = 'mercado';
+    mdbStatus.collection = 'productos';
     mdbStatus.connection.url = mdbUrl;
 }
 export const mdbSetLocal = () => {
@@ -302,10 +312,24 @@ export const mdbSetLocal = () => {
 }
 
 export const dbAccess = async (crud, collection, param1, param2, param3) => {
+    const doDisconnect = async () => {
+        if (!mdbPersist()) {
+            await dbDisconnect();
+        }
+    }
+
     let result = null;
+    
     try {
         if (!mdbConnected()) {
             await dbConnect();
+        }
+        if (!collection) {
+            if (!mdbCollection()) {
+                throw new Error('No se especificó una colección.');
+            } else {
+                collection = mdbCollection();
+            }
         }
         crud = crud.toLowerCase();
         switch (crud) {
@@ -341,12 +365,11 @@ export const dbAccess = async (crud, collection, param1, param2, param3) => {
                 console.log('Operation', crud, 'not supported!');
                 break;
         }
-        if (!mdbPersist()) {
-            await dbDisconnect();
-        }
+        await doDisconnect();
         return result;
     }
     catch (error) {
+        await doDisconnect();
         throw error;
     }
 }
@@ -362,34 +385,34 @@ const test = async () => {
             stock: 14,
         };
         let result = null;
-        console.log('Iniciando test...\nConectando con ' + (mdbIsAtlas()?'MongoDB Atlas':'MongoDB Server') + '...');
+        console.log('Iniciando test...\nConectando con ' + (mdbIsAtlas() ? 'MongoDB Atlas' : 'MongoDB Server') + '...');
         await dbConnect();
         console.log('Conexión establecida.');
-        console.log('Colecciones en la DB:\n  ['+await dbShowCollections()+']');
-        console.log('Insertando producto:\n  '+JSON.stringify(product));
-        result = await dbCreateOne(collection,product);
-        console.log('Resultado de la inserción:\n  '+JSON.stringify(result));
-        console.log('Colecciones en la DB:\n  ['+await dbShowCollections()+']');
+        console.log('Colecciones en la DB:\n  [' + await dbShowCollections() + ']');
+        console.log('Insertando producto:\n  ' + JSON.stringify(product));
+        result = await dbCreateOne(collection, product);
+        console.log('Resultado de la inserción:\n  ' + JSON.stringify(result));
+        console.log('Colecciones en la DB:\n  [' + await dbShowCollections() + ']');
         let id = result.insertedId;
-        console.log('Buscando producto insertado (\"_id\":\"'+id+'\")');
-        result = await dbReadById(collection,id);
-        console.log('  '+JSON.stringify(result));
+        console.log('Buscando producto insertado (\"_id\":\"' + id + '\")');
+        result = await dbReadById(collection, id);
+        console.log('  ' + JSON.stringify(result));
         console.log('Modificando producto encontrado...');
-        result = await dbUpdateById(collection,result._id,{$set: {descripcion:'Lámpara'}});
-        console.log('Resultado de la modificación:\n  '+JSON.stringify(result));
-        result = await dbReadById(collection,id);
+        result = await dbUpdateById(collection, result._id, { $set: { descripcion: 'Lámpara' } });
+        console.log('Resultado de la modificación:\n  ' + JSON.stringify(result));
+        result = await dbReadById(collection, id);
         console.log('Producto:');
-        console.log('  '+JSON.stringify(result));
-        console.log('Eliminando el producto modificado (\"_id\":\"'+result._id+'\")');
-        result = await dbDeleteById(collection,result._id);
-        console.log('Resultado de la eliminación:\n  '+JSON.stringify(result));
-        console.log('Buscando producto eliminado (\"_id\":\"'+id+'\")');
-        result = await dbReadById(collection,id);
-        console.log('Resultado de la búsqueda (debería ser null): '+JSON.stringify(result));
-        console.log('Colecciones en la DB:\n  ['+await dbShowCollections()+']');
+        console.log('  ' + JSON.stringify(result));
+        console.log('Eliminando el producto modificado (\"_id\":\"' + result._id + '\")');
+        result = await dbDeleteById(collection, result._id);
+        console.log('Resultado de la eliminación:\n  ' + JSON.stringify(result));
+        console.log('Buscando producto eliminado (\"_id\":\"' + id + '\")');
+        result = await dbReadById(collection, id);
+        console.log('Resultado de la búsqueda (debería ser null): ' + JSON.stringify(result));
+        console.log('Colecciones en la DB:\n  [' + await dbShowCollections() + ']');
         console.log('Elimnando la colección \"test\"...');
         dbDropCollection(collection);
-        console.log('Colecciones en la DB:\n  ['+await dbShowCollections()+']');
+        console.log('Colecciones en la DB:\n  [' + await dbShowCollections() + ']');
         console.log('Fin del test.');
     } catch (error) {
         console.log('Error:\n', error);
