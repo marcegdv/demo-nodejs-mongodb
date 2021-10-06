@@ -173,11 +173,11 @@ Para eliminar una base de datos, primero debes switchear a la base de datos con 
     
 ## Configuración del repo
     
-    * **mdb.example.js**: mínimo código para realizar operaciones CRUD.
-    * **generate.js**: si existe el archivo .env con los valores correctos, crea 3 documentos en la DDBB.
-    * **/api/api.js**: pequeña API de ejemplo para realizar algunas operaciones CRUD.
-    * **/api/database.js**: acceso al driver de mongoDB para realizar operaciones en la base de datos.
-    * **/api/environment.js**: mínimas variables de entorno para poder ejecutar api.js.
+* **mdb.example.js**: mínimo código para realizar operaciones CRUD.
+* **generate.js**: si existe el archivo .env con los valores correctos, crea 3 documentos en la DDBB.
+* **/api/api.js**: pequeña API de ejemplo para realizar algunas operaciones CRUD.
+* **/api/database.js**: acceso al driver de mongoDB para realizar operaciones en la base de datos.
+* **/api/environment.js**: mínimas variables de entorno para poder ejecutar api.js.
     
 **Archivo .env:**
 Si ya tenes instalado NodeJS, con solo clonar el repositorio y desde la ubicación de la carpeta donde se encuentra el archivo package.json, ejecuta desde una consola el comando npm install para que se instalen las dependencias para que puedas hacer tus propias pruebas.
