@@ -1,11 +1,10 @@
-MongoDB - Conceptos básicos
----------------------------
+# MongoDB - Conceptos básicos
 
 Es una base de datos del tipo NOSQL (not only SQL) por lo que los datos que almacena no tienen que cumplir un esquema predefinido.
 ¿Por qué utilizar MongoDB?
 Aunque MongoDB es multipropósito, esta orientada a poder leer/crear datos masivamente, y es ideal para minería de datos, redes sociales, juegos, ciencia de datos, y todo tipo de aplicaciones que generen/consuman datos rápidamente. Ademas es escalable horizontalmente.
 
-**Características principales:**
+## **Características principales:**
 * es multiplataforma
 * open source
 * puedes tener tu DB en la nube que ofrece (Atlas) o localmente (servicio y consola)
@@ -14,20 +13,20 @@ Aunque MongoDB es multipropósito, esta orientada a poder leer/crear datos masiv
 * un conjunto de Documentos conforman una Colección (es como una tabla en SQL)
 * intrepreta JavaScript
 
-**Ventajas:**
+## **Ventajas:**
 * No hay esquemas para los datos: por lo que un Documento puede tener una estructura diferente a otro Documento que se encuentre en la misma colección, incluso pueden tener atributos distintos.
 * Lecturas y escrituras masivas mas rápida que SQL: al leer o escribir un Documento, este se almacena en sola colección, a diferencia de las bases de datos relacionales, no tiene que acceder a distintas tablas (bases de datos normalizadas) para poder guardar un dato, y a gran escala, la lectura/creación en las SQL pierde performance.
 * Escalabilidad horizontal: cuando la DB requiera mas capacidad, con solo agregar una computadora ya es necesario, la base de datos puede estar distribuida en varias computadoras y funcionar sin mayores configuraciones o expansiones de hardware, por lo que este tipo de escalabilidad horizontal es mucho menos costosa que tener que escalar verticalmente (mejorar la computadora donde tenemos nuestra base de datos es mas costoso económicamente, y muchas veces no es posible mejorarla).
 
-**Desventajas:**
+## **Desventajas:**
 * Datos duplicados: al tener Documentos sin un esquema definido, lo mas práctico (y para explotar las ventajas de MongoDB) es duplicar algunos datos. Esto no ocurre en las bases de datos relacionales que está normalizadas.
 * Relaciones a cargo del programador: al no ser una DB relacional, realizar consultas complejas relacionando distintas colecciones puede caer en manos del desarrollador de la aplicación.
 * Múltiples updates pueden ser costosos: como vimos, la ventaja es la lectura/creación de datos, pero al realizar actualizaciones de forma masiva se verá una pérdida en la performance (lo opuesto que en las DB relacionales).
 
-**JSON y BSON:**
+## **JSON y BSON:**
 Al momento de leer/crear un dato en nuestra MongoDB, le pasamos los datos en formato de JSON, y también lo recibiremos en JSON cuando hagamos una consulta. Pero al ser un formato en el que los datos se representan con texto legible para humanos, hace que la computadora pierda performance al momento de procesarlos (ej: no hay tipos de datos), por lo que internamente MongoDB manipula esos mismos datos en formato BSON, el formato binario de JSON, ganando asi una mejor performance.
 
-**Documentos:**
+## **Documentos:**
 Este es el término que MongoDB utiliza para denominar a lo que sería un registro en una tabla de una DB relacional. Como vimos, estos pueden contener distinta estructura y atributos con respecto a otros documentos de su mismo tipo. Supongamos los siguientes Documentos de dos usuarios válidos en una misma colección:
 Usuario 1:
 ```json
@@ -65,8 +64,7 @@ MongoDB guarda los Documentos en Colecciones. Es ahí donde se realizaran las cr
 3 bytes = an incremental value (un número que se incrementa con cada insercción).
 De esta forma asegura que cada Documento tenga un identificador único.
 
-MongoDB - Atlas - Tu base de datos en la nube ☁️ 
----------------------------------------------
+# MongoDB - Atlas - Tu base de datos en la nube ☁️ 
 
 ¿No tenes un buen hardware o host donde instalar tu MongoDB? ¡No importa! MongoDB Atlas es la solución que nos ofrece MongoDB para que te desligues un poco de instalar y administrar algunas tareas al momento de tener tu base de datos, ¡y en la nube!
 Por el momento, dirigiéndote a la página oficial de MongoDB, sólo tienes que entrar a la sección referida a Atlas para acceder a este servicio que tiene una opción gratis. Claro que te pedirá que te registres, completando unos pocos datos, y que confirmes a través del e-mail que hayas indicado. Luego puedes acceder al plan Free el cual ofrece recursos reducidos que son suficientes para dar los primeros pasos y aprender cómo utilizar tu primer cluster, con 512Mb de espacio para almacenar datos (y otros límites como cantidad de conexiones, bases de datos, colecciones).
@@ -89,9 +87,9 @@ use <database_name>: Cambia/Crea una base de datos según el nombre indicado par
 db: Muestra la base de datos que actualmente se esta utilizando.
 show collections: Muestra las colecciones creadas en la base de datos actual.
 
-**Principales comandos para realizar operaciones CRUD (Create/Read/Update/Delete):**
+# **Principales comandos para realizar operaciones CRUD (Create/Read/Update/Delete):**
 
-* **Crear/Insertar (Create)**
+## **Crear/Insertar (Create)**
 
 **db.unaColeccion.insert({"clave":"valor", ...})**: Inserta en la colección unaColeccion un documento. Si la colección no existe, crea la colección e inserta el documento. Recordemos que MongoDB agrega una clave **\_id** con una valor único para cada documento que insertemos, a menos que especifiquemos esa clave y le asignemos un valor, perdiendo cierta integridad en los datos que agrega autmáticamente MongoDB. O bien, podríamos programar nuestro propio identificador único para cada documento que insertemos.
 Hay variantes con respecto a este método de inserción, ya que **insert()** puede insertar un documento o un array de documentos, y dependiendo de esta condición, el documento que retorna el estado de la inserción puede tener diferente estructura, por lo que los siguientes comandos aseguran la misma estructura en el documento de retorno:
@@ -100,7 +98,7 @@ Como vimos, estos tres métodos retornan un documento indicando el resultado de 
 
 Nota: Insertar o crear un nuevo atributo para un documento se realiza con el método update(). 
 
-* **Leer (Read)**
+## **Leer (Read)**
 
 **db.unaColeccion.find(<filtro>[, <proyeccion>])**: Buscar en la colección unaColeccion los documentos que coincidan con lo indicado en <filtro>. Si no se indica un filtrado, retornará todo el contenido de la colección, ejemplo: **db.prductos.find()**. Y el parámetro opcional <proyeccion> indica que atributos mostraremos de los documentos encontrados. Supongamos que realizamos la siguiente búsqueda en la colección productos de documentos que son de tipo bebidas que tienen los atributos: tipo, nombre, contenido y otros mas con el siguiente comando: **db.productos.find({"tipo": "bebidas"}, "nombre": 1, "_id": 0)**, nos retornará todos los documentos de tipo bebida pero mostrando sólo el atributo nombre y ocultando el atributo _id. En la proyección solo se puede indicar que se va a mostrar o que se va a ocultar. El ejemplo dado es el único caso (que conozco por el momento) que se pueden hacer inclusiones y exclusiones de atributos a mostrar.
 
@@ -140,7 +138,7 @@ Buscar los documentos según un nombre de proveedor: **db.productos.find({"prove
 Buscar los documentos según uno o varios tags: **db.productos.find({"tags": {$all: [ "limpieza", "plastico"]} })**
 Buscar los documentos con tags específicos: **db.productos.find({"tags": [ "limpieza", "lavanda"] })**
 
-* **Actualizar (Update)**
+## **Actualizar (Update)**
 
 Para actualizar un documento, MongoDB por lo menos necesita encontrarlo y saber que cambiar, por lo que la estructura básica de un update es:
 **db.collection.update(<query>, <update>[, {options}])**
@@ -160,7 +158,7 @@ Otra clave:valor para agregar al tercer parámetro es:
 **db.productos.update({"tipo": "importados"}, {$inc: {"precio": -240}})** Incrementa un valor numérico (el valor que tenía + el indicado). En el ejemplo vemos que podemos decrementar utilizando números negativos.
 **db.productos.update({"tipo": "carne"}, {$rename: {"vacuna": "ternera"}})** Cambia el nombre de una clave, en el ejemplo de vacuna a ternera.
 
-* **Quitar/Eliminar (Delete)**
+## **Quitar/Eliminar (Delete)**
 
 Existen dos métodos para eliminar documentos: deleteOne() y deleteMany(). Mediante un filtro, eliminará el documento que coincida con el filtro indicado. Puede ser una clave:valor o varias, ejemplos:
 **db.productos.deleteOne({"nombre":"valde", "material": "metal"})** Eliminará el primer documento que encuentre con "nombre": "valde" y "material": "metal". Retornará un objeto con una clave booleana y un contador de documentos eliminados. Tambien esta el método deleteMany() que eliminará todos los documentos que coincidan con el filtro.
@@ -177,10 +175,11 @@ Por último, crea un archivo .env (si, solo .env) de texto donde estarán las va
 
 (estructura del .env)
 
-Referencias:
-------------
+# Referencias:
 * **NodeJS** - https://nodejs.org/es/
 * **ExpressJS** - https://expressjs.com/es/
 * **MongoDB** - https://www.mongodb.com/es
 * **Manual** driver MongoDB para NodeJS - https://docs.mongodb.com/drivers/node/current/
 * **Nodemon** - Utilidad para desarrollo. Permite reiniciar la ejecución de tu proyecto cada vez que guardes un cambio en un archivo. Instalalo globalmente con: **npm install -g nodemon** o como una dependencia de desarrollo: **npm install --save-dev nodemon**
+
+![image](https://user-images.githubusercontent.com/58171839/136122531-22419e94-c9e6-452b-9138-52b3eec7790c.png)
