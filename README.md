@@ -176,7 +176,7 @@ Para eliminar una base de datos, primero debes switchear a la base de datos con 
 * **mdb.example.js**: mínimo código para realizar operaciones CRUD.
 * **generate.js**: si existe el archivo .env con los valores correctos, crea 3 documentos en la DDBB.
 * **/api/api.js**: pequeña API de ejemplo para realizar algunas operaciones CRUD.
-* **/api/database.js**: acceso al driver de mongoDB para realizar operaciones en la base de datos.
+* **/api/database.js**: pequeña librería para el driver de mongoDB para realizar operaciones en la base de datos.
 * **/api/environment.js**: mínimas variables de entorno para poder ejecutar api.js.
     
 **Archivo .env:**
