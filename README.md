@@ -87,7 +87,7 @@ use <database_name>: Cambia/Crea una base de datos según el nombre indicado par
 db: Muestra la base de datos que actualmente se esta utilizando.
 show collections: Muestra las colecciones creadas en la base de datos actual.
 
-# **Principales comandos para realizar operaciones CRUD (Create/Read/Update/Delete):**
+# **Principales comandos para realizar operaciones CRUD:**
 
 ## **Crear/Insertar (Create)**
 
