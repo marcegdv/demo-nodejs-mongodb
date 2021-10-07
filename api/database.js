@@ -48,6 +48,7 @@ export const dbDisconnect = async () => {
 
 //-------------------------------------------------------------------------------[ Create ] -----
 export const dbCreate = async (collection, document) => {
+    if (!Array.isArray(document)) { document = [document] }
     try {
         const result = await mdbClient().db(mdbName()).collection(collection).insertMany(document);
         mdbUpdateLast(mdbName(), collection, 'insertMany');
