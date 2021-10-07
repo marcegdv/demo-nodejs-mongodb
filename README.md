@@ -199,7 +199,7 @@ DB_CLUSTER_URL = <clusterUrl>
 DB_NAME = <dbName>
 DB_OPTIONS = <options>
 ```
-.env para acceder al Atlas de la demo:
+Valores del .env para acceder al Atlas que use para esta demo:
 ```text
 ## Environment variables for server.js
 NODE_ENV = 'development'
