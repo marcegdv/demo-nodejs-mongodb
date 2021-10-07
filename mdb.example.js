@@ -176,7 +176,7 @@ const isWrongName = (name) => {
     return errMsg;
 }
 
-//===============================================================================[ MAIN ] =====
+//===============================================================================[ Utilities ] =====
 async function agregarProducto(producto) {
     return await dbCreate('productos', producto);
 }
@@ -190,6 +190,7 @@ async function eliminarProducto(criterio) {
     return await dbDelete('productos', criterio);
 }
 
+//===============================================================================[ MAIN ] =====
 async function main() {
 
     
