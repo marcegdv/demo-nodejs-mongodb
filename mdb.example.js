@@ -77,7 +77,7 @@ export const dbCreateOne = async (collection, document) => {
 
 //-------------------------------------------------------------------------------[ Read ] -----
 export const dbRead = async (collection, criteria) => {
-    if (typeof criteria === 'string') { criteria = JSON.parse(documento); }
+    if (typeof criteria === 'string') { criteria = JSON.parse(criteria); }
     console.log('Seraching documents, criteria:', criteria);
     try {
         const dbCollection = atlas.db(mdbName).collection(collection);
@@ -91,7 +91,7 @@ export const dbRead = async (collection, criteria) => {
 }
 
 export const dbReadOne = async (collection, criteria) => {
-    if (typeof criteria === 'string') { criteria = JSON.parse(documento); }
+    if (typeof criteria === 'string') { criteria = JSON.parse(criteria); }
     console.log('Searching one document, criteria:', criteria);
     try {
         const dbCollection = atlas.db(mdbName).collection(collection);
@@ -106,7 +106,7 @@ export const dbReadOne = async (collection, criteria) => {
 
 //-------------------------------------------------------------------------------[ Update ] -----
 export const dbUpdate = async (collection, criteria, options) => {
-    if (typeof criteria === 'string') { criteria = JSON.parse(documento); }
+    if (typeof criteria === 'string') { criteria = JSON.parse(criteria); }
     if (typeof options === 'string') {
         console.log('Atributes must be an object.');
         return new Error('Atributes must be an object.');
@@ -125,7 +125,7 @@ export const dbUpdate = async (collection, criteria, options) => {
 
 //-------------------------------------------------------------------------------[ Delete ] -----
 export const dbDelete = async (collection, criteria) => {
-    if (typeof criteria === 'string') { criteria = JSON.parse(documento); }
+    if (typeof criteria === 'string') { criteria = JSON.parse(criteria); }
     console.log('Deleting documents, criteria:', criteria);
     try {
         const dbCollection = atlas.db(mdbName).collection(collection);
