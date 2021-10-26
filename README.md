@@ -199,22 +199,6 @@ DB_CLUSTER_URL = <clusterUrl>
 DB_NAME = <dbName>
 DB_OPTIONS = <options>
 ```
-Valores del .env para acceder al Atlas que use para esta demo:
-```text
-## Environment variables for server.js
-NODE_ENV = 'development'
-HOST = '127.0.0.1'
-PORT = 3001
-
-## Environment variables for MongoDB Atlas connection:
-## mongodb+srv://<user>:<pass>@<cluster>.<clusterUrl>/<dbName>?<options>
-DB_USER_NAME = 'user1'
-DB_USER_PASSWORD = 'bhunjimko'
-DB_CLUSTER_NAME = 'cluster0'
-DB_CLUSTER_URL = 'oenzu.mongodb.net'
-DB_NAME = 'mercado'
-DB_OPTIONS = 'retryWrites=true&w=majority'
-```
 
 # Referencias:
 * **NodeJS** - https://nodejs.org/es/
