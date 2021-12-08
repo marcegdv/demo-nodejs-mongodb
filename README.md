@@ -28,6 +28,7 @@ Al momento de leer/crear un dato en nuestra MongoDB, le pasamos los datos en for
 
 ## **Documentos:**
 Este es el término que MongoDB utiliza para denominar a lo que sería un registro en una tabla de una DB relacional. Como vimos, estos pueden contener distinta estructura y atributos con respecto a otros documentos de su mismo tipo. Supongamos los siguientes Documentos de dos usuarios válidos en una misma colección:
+
 Usuario 1:
 ```json
 {
