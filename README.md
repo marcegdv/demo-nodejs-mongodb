@@ -170,11 +170,11 @@ Para eliminar todos los documentos de una colección: **db.unaColeccion.remove({
 Para eliminar una colección de la base de datos: **db.unaColeccion.drop()**
 Para eliminar una base de datos, primero debes switchear a la base de datos con el comando use <database_name>, y luego utilizar el comando **db.dropDatabase()**.
 
-------------------
 # Nota - 2021/12/18
+
 Los archivos ```api.js``` y ```database.js``` se están reimplementando para una mejor organización del código.
 Los archivos de originales continúan funcionando.
-------------------
+
     
 ## Configuración del repo
     
