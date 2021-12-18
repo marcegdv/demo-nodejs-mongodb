@@ -54,7 +54,7 @@ app.post('/:collection/insertar', (req, res) => {
     dbAccess('c', collection, documents);
     res.send(response);
 });
-app.post('/insertar', (req, res) => {
+app.post('/insert', (req, res) => {
     const collection = req.header('collection');
     const documents = req.body;
     const response = logResponse(collection, documents)
