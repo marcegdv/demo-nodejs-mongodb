@@ -1,11 +1,10 @@
-import dotenv from 'dotenv';
+import { environment as env } from './configuration/environment.js';
 import server from './server/server.js';
-import { environment } from './configuration/environment.js';
 
-dotenv.config();
-const PORT = environment.PORT;
-const HOST = environment.HOST;
+const PORT = env.PORT;
+const HOST = env.HOST;
+const API_VERSION = env.API_VERSION;
 
 server.listen(PORT, HOST, function () {
-    console.log(`API listening on http://${HOST}:${PORT}/`);
+    console.log(`API ${API_VERSION} listening on http://${HOST}:${PORT}/`);
 });

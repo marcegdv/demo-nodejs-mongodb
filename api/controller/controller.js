@@ -1,6 +1,4 @@
-import { dbAccess, mdbSetAtlas } from '../services/database.js';
-
-mdbSetAtlas();
+import { dbAccess } from '../services/database.js';
 
 export const getProductos = async (req, res) => {
     try {
