@@ -204,7 +204,8 @@ DB_CLUSTER_URL = <clusterUrl>
 DB_NAME = <dbName>
 DB_OPTIONS = <options>
 ```
-
+Deberás reemplazar los valores <username> (etc.) por los que correspondan para acceder a tu base de datos en Atlas.
+    
 # Referencias:
 * **NodeJS** - https://nodejs.org/es/
 * **ExpressJS** - https://expressjs.com/es/
