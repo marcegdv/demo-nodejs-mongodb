@@ -4,7 +4,7 @@ import { MongoClient, ObjectId } from 'mongodb';
 dotenvConfig();
 
 export const mdbStatus = {
-    client: {}, //atlas o mongo
+    client: {}, //atlas o mongod
     isAtlas: false,
     isLocal: false,
     database: '',
@@ -14,7 +14,7 @@ export const mdbStatus = {
         status: false,
         date: {},
         persist: false,
-        idleAutodisconnect: 0, //in seconds
+        autodisconnect: 0, //in seconds
         timeout: null, //the function when timeout
     },
     last: {
@@ -32,7 +32,7 @@ export const dbConnect = async () => {
         mdbUpdateConnect();
     }
     catch (error) {
-        mdbUpdateLastError(error, true);
+        mdbUpdateAndThrowLastError(error, true);
     }
 }
 
@@ -42,7 +42,7 @@ export const dbDisconnect = async () => {
         await mdbClient().close();
         mdbUpdateDisconnect();
     } catch (error) {
-        mdbUpdateLastError(error, true);
+        mdbUpdateAndThrowLastError(error, true);
     }
 }
 
@@ -51,20 +51,20 @@ export const dbCreate = async (collection, document) => {
     if (!Array.isArray(document)) { document = [document] }
     try {
         const result = await mdbClient().db(mdbName()).collection(collection).insertMany(document);
-        mdbUpdateLast(mdbName(), collection, 'insertMany');
+        mdbUpdateLastAccess(mdbName(), collection, 'insertMany');
         return result;
     } catch (error) {
-        mdbUpdateLastError(error, true);
+        mdbUpdateAndThrowLastError(error, true);
     }
 }
 
 export const dbCreateOne = async (collection, document) => {
     try {
         const result = await mdbClient().db(mdbName()).collection(collection).insertOne(document);
-        mdbUpdateLast(mdbName(), collection, 'insertOne');
+        mdbUpdateLastAccess(mdbName(), collection, 'insertOne');
         return result;
     } catch (error) {
-        mdbUpdateLastError(error, true);
+        mdbUpdateAndThrowLastError(error, true);
     }
 }
 
@@ -77,22 +77,22 @@ export const dbCreateById = async (collection, mdbObjectId, document) => {
 export const dbRead = async (collection, criteria) => {
     try {
         const result = await mdbClient().db(mdbName()).collection(collection).find(criteria).toArray();
-        mdbUpdateLast(mdbName(), collection, 'find');
+        mdbUpdateLastAccess(mdbName(), collection, 'find');
         return result;
     }
     catch {
-        mdbUpdateLastError(error, true);
+        mdbUpdateAndThrowLastError(error, true);
     }
 }
 
 export const dbReadOne = async (collection, criteria) => {
     try {
         const result = await mdbClient().db(mdbName()).collection(collection).findOne(criteria);
-        mdbUpdateLast(mdbName(), collection, 'findOne');
+        mdbUpdateLastAccess(mdbName(), collection, 'findOne');
         return result;
     }
     catch {
-        mdbUpdateLastError(error, true);
+        mdbUpdateAndThrowLastError(error, true);
     }
 }
 
@@ -105,7 +105,7 @@ export const dbCollections = async () => {
         const result = await mdbClient().db(mdbName()).listCollections().toArray();
         return result;
     } catch (error) {
-        mdbUpdateLastError(error, true);
+        mdbUpdateAndThrowLastError(error, true);
     }
 }
 
@@ -128,10 +128,10 @@ export const dbUpdate = async (collection, criteria, update, options) => {
         } else {
             result = await dbCollection.updateMany(criteria, update);
         }
-        mdbUpdateLast(mdbName(), collection, 'updateMany');
+        mdbUpdateLastAccess(mdbName(), collection, 'updateMany');
         return result;
     } catch (error) {
-        mdbUpdateLastError(error, true);
+        mdbUpdateAndThrowLastError(error, true);
     }
 }
 
@@ -144,10 +144,10 @@ export const dbUpdateOne = async (collection, criteria, update, options) => {
         } else {
             result = await dbCollection.updateOne(criteria, update);
         }
-        mdbUpdateLast(mdbName(), collection, 'updateOne');
+        mdbUpdateLastAccess(mdbName(), collection, 'updateOne');
         return result;
     } catch (error) {
-        mdbUpdateLastError(error, true);
+        mdbUpdateAndThrowLastError(error, true);
     }
 }
 
@@ -159,20 +159,20 @@ export const dbUpdateById = async (collection, mdbObjectId, update, options) => 
 export const dbDelete = async (collection, criteria) => {
     try {
         const result = await mdbClient().db(mdbName()).collection(collection).deleteMany(criteria);
-        mdbUpdateLast(mdbName(), collection, 'deleteMany');
+        mdbUpdateLastAccess(mdbName(), collection, 'deleteMany');
         return result;
     } catch (error) {
-        mdbUpdateLastError(error, true);
+        mdbUpdateAndThrowLastError(error, true);
     }
 }
 
 export const dbDeleteOne = async (collection, criteria) => {
     try {
         const result = await mdbClient().db(mdbName()).collection(collection).deleteOne(criteria);
-        mdbUpdateLast(mdbName(), collection, 'deleteOne');
+        mdbUpdateLastAccess(mdbName(), collection, 'deleteOne');
         return result;
     } catch (error) {
-        mdbUpdateLastError(error, true);
+        mdbUpdateAndThrowLastError(error, true);
     }
 }
 
@@ -183,20 +183,20 @@ export const dbDeleteById = async (collection, mdbObjectId) => {
 export const dbClearCollection = async (collection) => {
     try {
         const result = await dbDelete(collection, {});
-        mdbUpdateLast(mdbName(), collection, 'clearCollection');
+        mdbUpdateLastAccess(mdbName(), collection, 'clearCollection');
         return result;
     } catch (error) {
-        mdbUpdateLastError(error, true);
+        mdbUpdateAndThrowLastError(error, true);
     }
 }
 
 export const dbDropCollection = async (collection) => {
     try {
         const result = await mdbClient().db(mdbName()).collection(collection).drop();
-        mdbUpdateLast(mdbName(), collection, 'dropCollection');
+        mdbUpdateLastAccess(mdbName(), collection, 'dropCollection');
         return result;
     } catch (error) {
-        mdbUpdateLastError(error, true);
+        mdbUpdateAndThrowLastError(error, true);
     }
 }
 
@@ -209,15 +209,15 @@ export const dbDrop = async (database) => {
         return result;
     }
     catch (error) {
-        mdbUpdateLastError(error, true);
+        mdbUpdateAndThrowLastError(error, true);
     }
 }
 
 //-------------------------------------------------------------------------------[ Utilities ] -----
 const mdbUpdateTimeout = () => {
-    if (mdbStatus.connection.idleAutodisconnect) {
+    if (mdbStatus.connection.autodisconnect) {
         mdbClearTimeout();
-        mdbStatus.connection.timeout = setTimeout(dbDisconnect, mdbStatus.connection.idleAutodisconnect * 1000);
+        mdbStatus.connection.timeout = setTimeout(dbDisconnect, mdbStatus.connection.autodisconnect * 1000);
     }
 }
 
@@ -242,12 +242,12 @@ const mdbUpdateDisconnect = () => {
     mdbStatus.last.action = 'disconnect';
 }
 
-const mdbUpdateLast = (database, collection, action) => {
+const mdbUpdateLastAccess = (database, collection, action) => {
     mdbStatus.last.database = database;
     mdbStatus.last.collection = collection;
     mdbStatus.last.action = action;
 }
-const mdbUpdateLastError = (error, doThrow) => {
+const mdbUpdateAndThrowLastError = (error, doThrow) => {
     mdbStatus.last.error = error;
     if (doThrow) { throw error };
 }
