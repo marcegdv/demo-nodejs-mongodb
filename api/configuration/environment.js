@@ -5,6 +5,7 @@ dotenv.config();
 export const environment = {
     HOST: process.env.HOST || '127.0.0.1',
     PORT: process.env.PORT || 3001,
+    API_PATH: process.env.API_PATH || '/api',
     API_VERSION: process.env.API_VERSION || 'v1',
     DB_USER: process.env.DB_USER_NAME || '<user_name>',
     DB_PASS: process.env.DB_USER_PASSWORD || '<user_password>',

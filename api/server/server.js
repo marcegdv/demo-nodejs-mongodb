@@ -22,5 +22,4 @@ server.get('/', (req, res) => {
 
 server.use('/api/v1', router);
 
-
 export default server;

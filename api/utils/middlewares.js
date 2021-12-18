@@ -18,13 +18,13 @@ export const onDelete = (req, res, next) => {
     next();
 };
 
-export const onRequestInfo = (req,res,next) => {
+export const onRequestInfo = (req, res, next) => {
     const myInfo = {
         query: req.query,
         params: req.params,
         headers: req.headers,
         body: req.body,
     };
-    console.log('Middleware: Info:\n',myInfo);
+    console.log('Middleware: Info:\n', myInfo);
     next();
 };
