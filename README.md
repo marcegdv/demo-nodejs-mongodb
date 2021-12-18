@@ -172,7 +172,7 @@ Para eliminar una base de datos, primero debes switchear a la base de datos con 
 
 ------------------
 # Nota - 2021/12/18
-    Los archivos api.js y database.js se estan reimplementando para una mejor organización del código.
+    Los archivos `api.js` y `database.js` se están reimplementando para una mejor organización del código.
     Los archivos de originales continúan funcionando.
 ------------------
     
