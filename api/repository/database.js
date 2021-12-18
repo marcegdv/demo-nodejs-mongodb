@@ -32,7 +32,7 @@ export const dbConnect = async () => {
         mdbUpdateConnect();
     }
     catch (error) {
-        mdbUpdateAndThrowLastError(error, true);
+        mdbUpdateErrorAndThrowIt(error, true);
     }
 }
 
@@ -42,7 +42,7 @@ export const dbDisconnect = async () => {
         await mdbClient().close();
         mdbUpdateDisconnect();
     } catch (error) {
-        mdbUpdateAndThrowLastError(error, true);
+        mdbUpdateErrorAndThrowIt(error, true);
     }
 }
 
@@ -54,7 +54,7 @@ export const dbCreate = async (collection, document) => {
         mdbUpdateLastAccess(mdbName(), collection, 'insertMany');
         return result;
     } catch (error) {
-        mdbUpdateAndThrowLastError(error, true);
+        mdbUpdateErrorAndThrowIt(error, true);
     }
 }
 
@@ -64,7 +64,7 @@ export const dbCreateOne = async (collection, document) => {
         mdbUpdateLastAccess(mdbName(), collection, 'insertOne');
         return result;
     } catch (error) {
-        mdbUpdateAndThrowLastError(error, true);
+        mdbUpdateErrorAndThrowIt(error, true);
     }
 }
 
@@ -81,7 +81,7 @@ export const dbRead = async (collection, criteria) => {
         return result;
     }
     catch {
-        mdbUpdateAndThrowLastError(error, true);
+        mdbUpdateErrorAndThrowIt(error, true);
     }
 }
 
@@ -92,7 +92,7 @@ export const dbReadOne = async (collection, criteria) => {
         return result;
     }
     catch {
-        mdbUpdateAndThrowLastError(error, true);
+        mdbUpdateErrorAndThrowIt(error, true);
     }
 }
 
@@ -105,7 +105,7 @@ export const dbCollections = async () => {
         const result = await mdbClient().db(mdbName()).listCollections().toArray();
         return result;
     } catch (error) {
-        mdbUpdateAndThrowLastError(error, true);
+        mdbUpdateErrorAndThrowIt(error, true);
     }
 }
 
@@ -131,7 +131,7 @@ export const dbUpdate = async (collection, criteria, update, options) => {
         mdbUpdateLastAccess(mdbName(), collection, 'updateMany');
         return result;
     } catch (error) {
-        mdbUpdateAndThrowLastError(error, true);
+        mdbUpdateErrorAndThrowIt(error, true);
     }
 }
 
@@ -147,7 +147,7 @@ export const dbUpdateOne = async (collection, criteria, update, options) => {
         mdbUpdateLastAccess(mdbName(), collection, 'updateOne');
         return result;
     } catch (error) {
-        mdbUpdateAndThrowLastError(error, true);
+        mdbUpdateErrorAndThrowIt(error, true);
     }
 }
 
@@ -162,7 +162,7 @@ export const dbDelete = async (collection, criteria) => {
         mdbUpdateLastAccess(mdbName(), collection, 'deleteMany');
         return result;
     } catch (error) {
-        mdbUpdateAndThrowLastError(error, true);
+        mdbUpdateErrorAndThrowIt(error, true);
     }
 }
 
@@ -172,7 +172,7 @@ export const dbDeleteOne = async (collection, criteria) => {
         mdbUpdateLastAccess(mdbName(), collection, 'deleteOne');
         return result;
     } catch (error) {
-        mdbUpdateAndThrowLastError(error, true);
+        mdbUpdateErrorAndThrowIt(error, true);
     }
 }
 
@@ -186,7 +186,7 @@ export const dbClearCollection = async (collection) => {
         mdbUpdateLastAccess(mdbName(), collection, 'clearCollection');
         return result;
     } catch (error) {
-        mdbUpdateAndThrowLastError(error, true);
+        mdbUpdateErrorAndThrowIt(error, true);
     }
 }
 
@@ -196,7 +196,7 @@ export const dbDropCollection = async (collection) => {
         mdbUpdateLastAccess(mdbName(), collection, 'dropCollection');
         return result;
     } catch (error) {
-        mdbUpdateAndThrowLastError(error, true);
+        mdbUpdateErrorAndThrowIt(error, true);
     }
 }
 
@@ -209,45 +209,58 @@ export const dbDrop = async (database) => {
         return result;
     }
     catch (error) {
-        mdbUpdateAndThrowLastError(error, true);
+        mdbUpdateErrorAndThrowIt(error, true);
     }
 }
 
 //-------------------------------------------------------------------------------[ Utilities ] -----
-const mdbUpdateTimeout = () => {
-    if (mdbStatus.connection.autodisconnect) {
+const mdbUpdateConnect = () => {
+    mdbStatus.connection.status = true;
+    mdbStatus.connection.date = Date.now();
+    mdbStatus.database = mdbName();
+    mdbStatus.last.action = 'connected';
+    mdbUpdateTimeOut();
+}
+
+const mdbUpdateDisconnect = () => {
+    mdbClearTimeout();
+    mdbStatus.connection.status = false;
+    mdbStatus.last.action = 'disconnected';
+}
+
+const mdbUpdateTimeOut = () => {
+    if (mdbAutoDisconnectTimeOut() > 0) {
         mdbClearTimeout();
-        mdbStatus.connection.timeout = setTimeout(dbDisconnect, mdbStatus.connection.autodisconnect * 1000);
+        mdbStatus.connection.timeout = setTimeout(
+            dbDisconnect,
+            mdbAutoDisconnectTimeOut(mdbStatus.connection.autodisconnect)
+        );
     }
+}
+
+const mdbAutoDisconnectTimeOut = (seconds) => {
+    let miliseconds = mdbStatus.connection.autodisconnect;
+    if (seconds > 0) {
+        miliseconds = seconds * 1000;
+    }
+    mdbStatus.connection.autodisconnect = miliseconds;
+    return mdbStatus.connection.autodisconnect;
 }
 
 const mdbClearTimeout = () => {
     if (mdbStatus.connection.timeout) {
         clearTimeout(mdbStatus.connection.timeout);
-        mdbStatus.connection.timeout = null;
     }
+    mdbStatus.connection.timeout = null;
 }
 
-const mdbUpdateConnect = () => {
-    mdbStatus.connection.status = true;
-    mdbStatus.connection.date = Date.now();
-    mdbUpdateTimeout();
-    mdbStatus.database = mdbName();
-    mdbStatus.last.action = 'connect';
-}
-
-const mdbUpdateDisconnect = () => {
-    mdbStatus.connection.status = false;
-    mdbClearTimeout();
-    mdbStatus.last.action = 'disconnect';
-}
 
 const mdbUpdateLastAccess = (database, collection, action) => {
     mdbStatus.last.database = database;
     mdbStatus.last.collection = collection;
     mdbStatus.last.action = action;
 }
-const mdbUpdateAndThrowLastError = (error, doThrow) => {
+const mdbUpdateErrorAndThrowIt = (error, doThrow) => {
     mdbStatus.last.error = error;
     if (doThrow) { throw error };
 }
@@ -260,23 +273,30 @@ const mdbPersist = () => {
     return mdbStatus.connection.persist;
 }
 
-const mdbName = () => {
+const mdbName = (name) => {
+    if (name && (typeof name === 'string')) {
+        mdbSetName(name);
+    }
     return mdbStatus.database;
 }
-
 const mdbSetName = (databaseName) => {
     mdbStatus.database = databaseName;
 }
 
+const mdbCollection = (name) => {
+    if (name && (typeof name === 'string')) {
+        mdbSetCollection(name);
+    }
+    return mdbStatus.collection;
+}
 const mdbSetCollection = (collection) => {
     mdbStatus.collection = collection;
 }
 
-const mdbCollection = () => {
-    return mdbStatus.collection;
-}
-
-const mdbClient = () => {
+const mdbClient = (client) => {
+    if (client && (client instanceof MongoClient)) {
+        mdbStatus.client = client
+    }
     return mdbStatus.client;
 }
 
@@ -288,6 +308,24 @@ const mdbIsLocal = () => {
     return mdbStatus.isLocal;
 }
 
+const mdbStatusClear = () => {
+    mdbStatus.client = null;
+    mdbStatus.isAtlas = false;
+    mdbStatus.isLocal = false;
+    mdbStatus.database = '';
+    mdbStatus.collection = '';
+    mdbStatus.connection.url = '';
+    mdbStatus.connection.status = false;
+    mdbStatus.connection.date = null;
+    mdbStatus.connection.persist = false;
+    mdbStatus.connection.autodisconnect = 0;
+    mdbStatus.connection.timeout = null;
+    mdbStatus.last.error = null;
+    mdbStatus.last.database = '';
+    mdbStatus.last.collection = '';
+    mdbStatus.last.action = '';
+}
+
 export const mdbSetAtlas = () => {
     const mdbUser = process.env.DB_USER_NAME;
     const mdbPass = process.env.DB_USER_PASSWORD;
@@ -296,8 +334,7 @@ export const mdbSetAtlas = () => {
     const mdbDbName = process.env.DB_NAME;
     const mdbOptions = process.env.DB_OPTIONS;
     const mdbUrl = 'mongodb+srv://' + mdbUser + ':' + mdbPass + '@' + mdbCluster + '.' + mdbClusterUrl + '/' + mdbDbName + '?' + mdbOptions;
-    const atlas = new MongoClient(mdbUrl);
-    mdbStatus.client = atlas;
+    mdbStatus.client = new MongoClient(mdbUrl);
     mdbStatus.isAtlas = true;
     mdbStatus.database = 'mercado';
     mdbStatus.collection = 'productos';
@@ -305,8 +342,7 @@ export const mdbSetAtlas = () => {
 }
 export const mdbSetLocal = () => {
     const mdbUrl = 'mongodb://127.0.0.1:27017';
-    const local = new MongoClient(mdbUrl);
-    mdbStatus.client = local;
+    mdbStatus.client = new MongoClient(mdbUrl);;
     mdbStatus.isAtlas = false;
     mdbStatus.database = 'unaDataBase';
     mdbStatus.connection.url = mdbUrl;
@@ -320,7 +356,7 @@ export const dbAccess = async (crud, collection, param1, param2, param3) => {
     }
 
     let result = null;
-    
+
     try {
         if (!mdbConnected()) {
             await dbConnect();
