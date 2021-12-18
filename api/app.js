@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
-import server from './server/server';
-import { environment } from './configuration/environment';
+import server from './server/server.js';
+import { environment } from './configuration/environment.js';
 
 dotenv.config();
 const PORT = environment.PORT;

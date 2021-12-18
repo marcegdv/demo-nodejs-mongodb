@@ -1,25 +1,24 @@
 import express from 'express';
-import createOperations from '../controller/post/createOperations';
-import readOperations from '../controller/get/readOperations';
-import updateOperations from '../controller/put/updateOperations';
-import deleteOperations from '../controller/delete/deleteOperations';
+import * as operations from '../controller/controller.js';
 
 const router = express.Router();
 
-router.get('/productos', readOperations);
-router.get('/producto', readOperations);
-router.get('/producto/:id', readOperations);
-router.get('/productos/stock-mayor-igual/:qtty', readOperations);
+router.get('/productos', operations.getProductos);
+/*
+router.get('/producto', operations);
+router.get('/producto/:id', operations);
+router.get('/productos/stock-mayor-igual/:qtty', operations);
 
-router.post('/:collection/insertar', createOperations);
-router.post('/insert', createOperations);
-router.post('/insertar', createOperations);
+router.post('/:collection/insertar', operations);
+router.post('/insert', operations);
+router.post('/insertar', operations);
 
-router.put('/producto/:id/set-stock/:qtty', updateOperations);
-router.put('/producto/:id/renombrar', updateOperations);
-router.put('/productos/ajustar-precio/:qtty', updateOperations);
-router.put('/productos/:producto/renombrar', updateOperations);
+router.put('/producto/:id/set-stock/:qtty', operations);
+router.put('/producto/:id/renombrar', operations);
+router.put('/productos/ajustar-precio/:qtty', operations);
+router.put('/productos/:producto/renombrar', operations);
 
-router.delete('/producto/eliminar/:id', deleteOperations);
+router.delete('/producto/eliminar/:id', operations);
+*/
 
 export default router;
