@@ -5,8 +5,7 @@
     "main": "",
     "scripts": {
         "dev": "nodemon mdb.example.js",
-        "api": "nodemon ./api/api.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "api": "nodemon ./api/api.js"
     },
     "keywords": [],
     "author": "Marcelo Gustavo Daniel Floridia",
