@@ -185,7 +185,7 @@ Para eliminar una base de datos, primero debes switchear a la base de datos con 
 * **/api/environment.js**: mínimas variables de entorno para poder ejecutar api.js.
 
 * ```npm run dev``` para ejecutar un ejemplo con visualizaciones en consola.
-* ```npm run api``` para ejecutar una pequeña API y realizar CRUDs desde la aplicación Postman con la colección de request en el archivo /api/postman_collection.json
+* ```npm run api``` para ejecutar una pequeña API y realizar CRUDs desde la aplicación Postman, importando la colección de requests contenidas en el archivo /api/postman_collection.json
 
 **Archivo .env:**
 Si ya tenes instalado NodeJS, con solo clonar el repositorio y desde la ubicación de la carpeta donde se encuentra el archivo package.json, ejecuta desde una consola el comando npm install para que se instalen las dependencias para que puedas hacer tus propias pruebas.
