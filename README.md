@@ -92,27 +92,27 @@ show collections: Muestra las colecciones creadas en la base de datos actual.
 
 ## **Crear/Insertar (Create)**
 
-**db.unaColeccion.insert({"clave":"valor", ...})**: Inserta en la colección unaColeccion un documento. Si la colección no existe, crea la colección e inserta el documento. Recordemos que MongoDB agrega una clave **\_id** con una valor único para cada documento que insertemos, a menos que especifiquemos esa clave y le asignemos un valor, perdiendo cierta integridad en los datos que agrega autmáticamente MongoDB. O bien, podríamos programar nuestro propio identificador único para cada documento que insertemos.
-Hay variantes con respecto a este método de inserción, ya que **insert()** puede insertar un documento o un array de documentos, y dependiendo de esta condición, el documento que retorna el estado de la inserción puede tener diferente estructura, por lo que los siguientes comandos aseguran la misma estructura en el documento de retorno:
-**insertMany([{}, {}, ..., {}])** que inserta un array de documentos, e **insertOne({})** inserta un solo documento.
-Como vimos, estos tres métodos retornan un documento indicando el resultado de la operación. Un documento de tipo WriteResult si se inserto un solo documento, o de tipo BulkWriteResult si se insertaron varios documentos. Por lo que **insertOne()** retorna siempre un documento WriteResult e **insertMany()** un documento **BulkWriteResult**.
+```db.unaColeccion.insert({'clave':'valor', ...})```: Inserta en la colección unaColeccion un documento. Si la colección no existe, crea la colección e inserta el documento. Recordemos que MongoDB agrega una clave **\_id** con una valor único para cada documento que insertemos, a menos que especifiquemos esa clave y le asignemos un valor, perdiendo cierta integridad en los datos que agrega autmáticamente MongoDB. O bien, podríamos programar nuestro propio identificador único para cada documento que insertemos.
+Hay variantes con respecto a este método de inserción, ya que ```insert()``` puede insertar un documento o un array de documentos, y dependiendo de esta condición, el documento que retorna el estado de la inserción puede tener diferente estructura, por lo que los siguientes comandos aseguran la misma estructura en el documento de retorno:
+```insertMany([{}, {}, ..., {}])``` que inserta un array de documentos, e ```insertOne({})``` inserta un solo documento.
+Como vimos, estos tres métodos retornan un documento indicando el resultado de la operación. Un documento de tipo WriteResult si se inserto un solo documento, o de tipo BulkWriteResult si se insertaron varios documentos. Por lo que ```insertOne()``` retorna siempre un documento WriteResult e ```insertMany()``` un documento ```BulkWriteResult```.
 
 Nota: Insertar o crear un nuevo atributo para un documento se realiza con el método update(). 
 
 ## **Leer (Read)**
 
-**db.unaColeccion.find(<filtro>[, <proyeccion>])**: Buscar en la colección unaColeccion los documentos que coincidan con lo indicado en <filtro>. Si no se indica un filtrado, retornará todo el contenido de la colección, ejemplo: **db.prductos.find()**. Y el parámetro opcional <proyeccion> indica que atributos mostraremos de los documentos encontrados. Supongamos que realizamos la siguiente búsqueda en la colección productos de documentos que son de tipo bebidas que tienen los atributos: tipo, nombre, contenido y otros mas con el siguiente comando: **db.productos.find({"tipo": "bebidas"}, "nombre": 1, "_id": 0)**, nos retornará todos los documentos de tipo bebida pero mostrando sólo el atributo nombre y ocultando el atributo _id. En la proyección solo se puede indicar que se va a mostrar o que se va a ocultar. El ejemplo dado es el único caso (que conozco por el momento) que se pueden hacer inclusiones y exclusiones de atributos a mostrar.
+```db.unaColeccion.find(<filtro>[, <proyeccion>])```: Buscar en la colección unaColeccion los documentos que coincidan con lo indicado en <filtro>. Si no se indica un filtrado, retornará todo el contenido de la colección, ejemplo: ```db.prductos.find()```. Y el parámetro opcional <proyeccion> indica que atributos mostraremos de los documentos encontrados. Supongamos que realizamos la siguiente búsqueda en la colección productos de documentos que son de tipo bebidas que tienen los atributos: tipo, nombre, contenido y otros mas con el siguiente comando: ```db.productos.find({'tipo': 'bebidas'}, 'nombre': 1, '_id': 0)```, nos retornará todos los documentos de tipo bebida pero mostrando sólo el atributo nombre y ocultando el atributo _id. En la proyección solo se puede indicar que se va a mostrar o que se va a ocultar. El ejemplo dado es el único caso (que conozco por el momento) que se pueden hacer inclusiones y exclusiones de atributos a mostrar.
 
 Al método find() se le puede enviar/concatenar los siguientes métodos:
-**pretty()**: Muestra el resultado de la búsqueda en un formato mas legible para las personas.
-**sort({"nombre": 1})**: Muestra el resultado de la búsqueda, ordenando los documentos de forma ascendente según el valor de la clave nombre. sort({"nombre": -1}) ordena de manera descendente.
-**limit(<cantidad>)**: Muestra los primeros <cantidad> documentos encontrados.
-**count()**: Retorna la cantidad de documentos encontrados.
-**forEach(item => aFunction())**: Por cada item en una colección de documentos, ejecuta una función. Recordemos que MongoDB interpreta algunas instrucciones JavaScript, por lo que podríamos definir una función de la misma forma que la escribiríamos en JavaScript para luego utilizarla en el método forEach(). 
+```.pretty()```: Muestra el resultado de la búsqueda en un formato mas legible para las personas.
+```.sort({"nombre": 1})```: Muestra el resultado de la búsqueda, ordenando los documentos de forma ascendente según el valor de la clave nombre. ```.sort({"nombre": -1})``` ordena de manera descendente.
+```.limit(<cantidad>)```: Muestra los primeros <cantidad> documentos encontrados.
+```.count()```: Retorna la cantidad de documentos encontrados.
+```.forEach(item => aFunction())```: Por cada item en una colección de documentos, ejecuta una función. Recordemos que MongoDB interpreta algunas instrucciones JavaScript, por lo que podríamos definir una función de la misma forma que la escribiríamos en JavaScript para luego utilizarla en el método ```.forEach()```. 
 
 Algunas comparaciones con where en SQL:
-**db.productos.find({"tipo": "limpieza"})** = select * from productos where tipo = 'limpieza'
-**db.productos.find({"tipo" : {$ne: "limpieza"}})** = select * from productos where tipo <> 'limpieza'
+```db.productos.find({'tipo': 'limpieza'})``` = select * from productos where tipo = 'limpieza'
+```db.productos.find({'tipo': {$ne: 'limpieza'}})``` = select * from productos where tipo <> 'limpieza'
 Otros operadores **$**:
 **$ lt**: < (less than, menor que)
 **$ lte**: <= (less than equals, menor e igual que)
@@ -135,40 +135,40 @@ Supongamos que el siguiente documento existe en la colección productos y querem
 }
 ```
 
-Buscar los documentos según un nombre de proveedor: **db.productos.find({"proveedor.nombre": "Todo limpieza SA"})**
-Buscar los documentos según uno o varios tags: **db.productos.find({"tags": {$all: [ "limpieza", "plastico"]} })**
-Buscar los documentos con tags específicos: **db.productos.find({"tags": [ "limpieza", "lavanda"] })**
+Buscar los documentos según un nombre de proveedor: ```db.productos.find({'proveedor.nombre': 'Todo limpieza SA'})```
+Buscar los documentos según uno o varios tags: ```db.productos.find({'tags': {$all: [ 'limpieza', 'plastico']} })```
+Buscar los documentos con tags específicos: ```db.productos.find({'tags': [ 'limpieza', 'lavanda' ] })```
 
 ## **Actualizar (Update)**
 
 Para actualizar un documento, MongoDB por lo menos necesita encontrarlo y saber que cambiar, por lo que la estructura básica de un update es:
-**db.collection.update(<query>, <update>[, {options}])**
+```db.collection.update(<query>, <update>[, {options}])```
 
 Algunos ejemplos:
-**db.productos.update({"tipo": "fideo"},{$set: {"cantidad":"500","udm":"gramos"}})** Agrega al primer documento que encuentre con "tipo":"fideo" y agrega las clave:valor "cantidad":"500" y "umd":"gramos".
-**db.productos.update({"tipo": "fideo"}, {$unset: {"udm":""}})** Quita la clave"udm" del primer documento que encuentre con la clave:valor "tipo":fideo".
-**db.productos.update({"tipo": "fideo"},{$set: {"cantidad":"500","udm":"gramos"}},{multi:true})** Agrega a todos los documentos que encuentre con "tipo":"fideo" y le agrega las clave:valor "cantidad":"500" y "udm":"gramos" gracias al tercer parámetro {multi:true}.
+```db.productos.update({'tipo': 'fideo'},{$set: {'cantidad':'500','udm':'gramos'}})``` Agrega al primer documento que encuentre con 'tipo':'fideo' y agrega las clave:valor 'cantidad':'500' y 'umd':'gramos'.
+```db.productos.update({'tipo': 'fideo'}, {$unset: {'udm':''}})``` Quita la clave 'udm' del primer documento que encuentre con la clave:valor 'tipo':'fideo'.
+```db.productos.update({'tipo': 'fideo'},{$set: {'cantidad':'500','udm':'gramos'}},{multi:true})``` Agrega a todos los documentos que encuentre con 'tipo':'fideo' y le agrega las clave:valor 'cantidad':'500' y 'udm':'gramos' gracias al tercer parámetro {multi:true}.
 
 Otra clave:valor para agregar al tercer parámetro es:
-**upsert:true** realiza un insert si no existe un documento con la clave:valor indicada (es una mezcla entre las palabras UPdate e inSERT), ejemplo:
-**db.productos.update({"noExiste": "herramienta"}, {$set: {"tipo": "herramienta", "nombre": "pala"}}, {upsert: true})** Crea el Documento si no existe, con la clave:valor indicadas en el segundo parámetro.
+```upsert:true``` realiza un insert si no existe un documento con la clave:valor indicada (es una mezcla entre las palabras UPdate e inSERT), ejemplo:
+```db.productos.update({'noExiste': 'herramienta'}, {$set: {'tipo': 'herramienta', 'nombre': 'pala'}}, {upsert: true})``` Crea el Documento si no existe, con la clave:valor indicadas en el segundo parámetro.
 
-**db.productos.update({"tipo": "fideo"},{$set: {"tipo":"fideos secos"}},{multi:true})** Busca todos los documentos que tienen la clave:valor "tipo":"fideo" y cambia el valor de esa clave:valor por "tipo":"fideos secos".
-**db.productos.update({"tipo": "bebida"},{"tipo": "bebida","subtipo": "gaseosa", "nombre": "coca-cola"})** Busca el primer documento que encuentre con la clave:valor = "tipo":"bebida" y cambia todo el contenido de ese documento por lo indicado en el segundo parámetro, reestructurando el documento en su totalidad. 
-**db.productos.update({"tipo":"bebida","subtipo":"gaseosa"},{$set: {"precio":"100","cantidad":1.5,"udm":"litros"}})** Buscar el primer documento que encuentre con las clave:valor "tipo":"bebida" y "subtipo":"gaseosa" para agregarle tres clave:valor nuevas: "precio":"100", "cantidad":"1.5" y "udm":"litros". Tambien puede insertar una clave:valor con el valor siendo un array o un documento.
-**db.productos.update({"tipo": "importados"}, {$inc: {"precio": -240}})** Incrementa un valor numérico (el valor que tenía + el indicado). En el ejemplo vemos que podemos decrementar utilizando números negativos.
-**db.productos.update({"tipo": "carne"}, {$rename: {"vacuna": "ternera"}})** Cambia el nombre de una clave, en el ejemplo de vacuna a ternera.
+```db.productos.update({'tipo': 'fideo'},{$set: {'tipo':'fideos secos'}},{multi:true})``` Busca todos los documentos que tienen la clave:valor 'tipo':'fideo' y cambia el valor de esa clave:valor por 'tipo':'fideos secos'.
+```db.productos.update({'tipo': 'bebida'},{'tipo': 'bebida','subtipo': 'gaseosa', 'nombre': 'coca-cola'})``` Busca el primer documento que encuentre con la clave:valor = 'tipo':'bebida' y cambia todo el contenido de ese documento por lo indicado en el segundo parámetro, reestructurando el documento en su totalidad. 
+```db.productos.update({'tipo':'bebida','subtipo':'gaseosa'},{$set: {'precio':'100','cantidad':1.5,'udm':'litros'}})``` Buscar el primer documento que encuentre con las clave:valor 'tipo':'bebida' y 'subtipo':'gaseosa' para agregarle tres clave:valor nuevas: 'precio':'100', 'cantidad':'1.5' y 'udm':'litros'. Tambien puede insertar una clave:valor con el valor siendo un array o un documento.
+```db.productos.update({'tipo': 'importados'}, {$inc: {'precio': -240}})``` Incrementa un valor numérico (el valor que tenía + el indicado). En el ejemplo vemos que podemos decrementar utilizando números negativos.
+```db.productos.update({'tipo': 'carne'}, {$rename: {'vacuna': 'ternera'}})``` Cambia el nombre de una clave, en el ejemplo de vacuna a ternera.
 
 ## **Quitar/Eliminar (Delete)**
 
 Existen dos métodos para eliminar documentos: deleteOne() y deleteMany(). Mediante un filtro, eliminará el documento que coincida con el filtro indicado. Puede ser una clave:valor o varias, ejemplos:
-**db.productos.deleteOne({"nombre":"valde", "material": "metal"})** Eliminará el primer documento que encuentre con "nombre": "valde" y "material": "metal". Retornará un objeto con una clave booleana y un contador de documentos eliminados. Tambien esta el método deleteMany() que eliminará todos los documentos que coincidan con el filtro.
+```db.productos.deleteOne({'nombre':'valde', 'material': 'metal'})``` Eliminará el primer documento que encuentre con 'nombre': 'valde' y 'material': 'metal'. Retornará un objeto con una clave booleana y un contador de documentos eliminados. Tambien esta el método deleteMany() que eliminará todos los documentos que coincidan con el filtro.
 
 Nota: Eliminar un atributo de un documento sería una actualización, por lo que se hace con el método update().
 
-Para eliminar todos los documentos de una colección: **db.unaColeccion.remove({})** o **db.unaColeccion.deleteMany({})**.
-Para eliminar una colección de la base de datos: **db.unaColeccion.drop()**
-Para eliminar una base de datos, primero debes switchear a la base de datos con el comando use <database_name>, y luego utilizar el comando **db.dropDatabase()**.
+Para eliminar todos los documentos de una colección: ```db.unaColeccion.remove({})``` o ```db.unaColeccion.deleteMany({})```.
+Para eliminar una colección de la base de datos: ```db.unaColeccion.drop()```
+Para eliminar una base de datos, primero debes switchear a la base de datos con el comando use <database_name>, y luego utilizar el comando ```db.dropDatabase()```.
 
 # Nota - 2021/12/18
 
