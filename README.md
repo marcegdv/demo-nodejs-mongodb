@@ -83,10 +83,10 @@ Ya que el cluster esta funcionando y la consola de MongoDB se conectó, veamos a
 help: Muestra una breve descripción de los comandos disponibles.
 
 Principales comandos para ver y posicionarnos en la base de datos correcta:
-show dbs: Muestra las bases de datos existentes.
-use <database_name>: Cambia/Crea una base de datos según el nombre indicado para utilizar.
-db: Muestra la base de datos que actualmente se esta utilizando.
-show collections: Muestra las colecciones creadas en la base de datos actual.
+```show dbs```: Muestra las bases de datos existentes.
+```use <database_name>```: Cambia/Crea una base de datos según el nombre indicado para utilizar.
+```db```: Muestra la base de datos que actualmente se esta utilizando.
+```show collections```: Muestra las colecciones creadas en la base de datos actual.
 
 # **Principales comandos para realizar operaciones CRUD:**
 
@@ -101,12 +101,12 @@ Nota: Insertar o crear un nuevo atributo para un documento se realiza con el mé
 
 ## **Leer (Read)**
 
-```db.unaColeccion.find(<filtro>[, <proyeccion>])```: Buscar en la colección unaColeccion los documentos que coincidan con lo indicado en <filtro>. Si no se indica un filtrado, retornará todo el contenido de la colección, ejemplo: ```db.prductos.find()```. Y el parámetro opcional <proyeccion> indica que atributos mostraremos de los documentos encontrados. Supongamos que realizamos la siguiente búsqueda en la colección productos de documentos que son de tipo bebidas que tienen los atributos: tipo, nombre, contenido y otros mas con el siguiente comando: ```db.productos.find({'tipo': 'bebidas'}, 'nombre': 1, '_id': 0)```, nos retornará todos los documentos de tipo bebida pero mostrando sólo el atributo nombre y ocultando el atributo _id. En la proyección solo se puede indicar que se va a mostrar o que se va a ocultar. El ejemplo dado es el único caso (que conozco por el momento) que se pueden hacer inclusiones y exclusiones de atributos a mostrar.
+```db.unaColeccion.find(<filtro>[, <proyeccion>])```: Buscar en la colección unaColeccion los documentos que coincidan con lo indicado en ```<filtro>```. Si no se indica un filtrado, retornará todo el contenido de la colección, ejemplo: ```db.prductos.find()```. Y el parámetro opcional ```<proyeccion>``` indica que atributos mostraremos de los documentos encontrados. Supongamos que realizamos la siguiente búsqueda en la colección productos de documentos que son de tipo bebidas que tienen los atributos: tipo, nombre, contenido y otros mas con el siguiente comando: ```db.productos.find({'tipo': 'bebidas'}, 'nombre': 1, '_id': 0)```, nos retornará todos los documentos de tipo bebida pero mostrando sólo el atributo nombre y ocultando el atributo _id. En la proyección solo se puede indicar que se va a mostrar o que se va a ocultar. El ejemplo dado es el único caso (que conozco por el momento) que se pueden hacer inclusiones y exclusiones de atributos a mostrar.
 
 Al método find() se le puede enviar/concatenar los siguientes métodos:
 ```.pretty()```: Muestra el resultado de la búsqueda en un formato mas legible para las personas.
 ```.sort({"nombre": 1})```: Muestra el resultado de la búsqueda, ordenando los documentos de forma ascendente según el valor de la clave nombre. ```.sort({"nombre": -1})``` ordena de manera descendente.
-```.limit(<cantidad>)```: Muestra los primeros <cantidad> documentos encontrados.
+```.limit(<cantidad>)```: Muestra los primeros ```<cantidad>``` documentos encontrados.
 ```.count()```: Retorna la cantidad de documentos encontrados.
 ```.forEach(item => aFunction())```: Por cada item en una colección de documentos, ejecuta una función. Recordemos que MongoDB interpreta algunas instrucciones JavaScript, por lo que podríamos definir una función de la misma forma que la escribiríamos en JavaScript para luego utilizarla en el método ```.forEach()```. 
 
@@ -114,10 +114,10 @@ Algunas comparaciones con where en SQL:
 ```db.productos.find({'tipo': 'limpieza'})``` = select * from productos where tipo = 'limpieza'
 ```db.productos.find({'tipo': {$ne: 'limpieza'}})``` = select * from productos where tipo <> 'limpieza'
 Otros operadores **$**:
-**$ lt**: < (less than, menor que)
-**$ lte**: <= (less than equals, menor e igual que)
-**$ gt**: > (greater than, mayor que)
-**$ gte**: >= (greater than equals, mayor e igual que)
+**$ lt**: < (less than)
+**$ lte**: <= (less than equals)
+**$ gt**: > (greater than)
+**$ gte**: >= (greater than equals)
 
 Supongamos que el siguiente documento existe en la colección productos y queremos retornarlo:
 ```json
@@ -161,14 +161,14 @@ Otra clave:valor para agregar al tercer parámetro es:
 
 ## **Quitar/Eliminar (Delete)**
 
-Existen dos métodos para eliminar documentos: deleteOne() y deleteMany(). Mediante un filtro, eliminará el documento que coincida con el filtro indicado. Puede ser una clave:valor o varias, ejemplos:
+Existen dos métodos para eliminar documentos: **deleteOne()** y **deleteMany()**. Mediante un filtro, eliminará el documento que coincida con el filtro indicado. Puede ser una clave:valor o varias, ejemplos:
 ```db.productos.deleteOne({'nombre':'valde', 'material': 'metal'})``` Eliminará el primer documento que encuentre con 'nombre': 'valde' y 'material': 'metal'. Retornará un objeto con una clave booleana y un contador de documentos eliminados. Tambien esta el método deleteMany() que eliminará todos los documentos que coincidan con el filtro.
 
 Nota: Eliminar un atributo de un documento sería una actualización, por lo que se hace con el método update().
 
 Para eliminar todos los documentos de una colección: ```db.unaColeccion.remove({})``` o ```db.unaColeccion.deleteMany({})```.
 Para eliminar una colección de la base de datos: ```db.unaColeccion.drop()```
-Para eliminar una base de datos, primero debes switchear a la base de datos con el comando use <database_name>, y luego utilizar el comando ```db.dropDatabase()```.
+Para eliminar una base de datos, primero debes switchear a la base de datos con el comando use ```<database_name>```, y luego utilizar el comando ```db.dropDatabase()```.
 
 # Nota - 2021/12/18
 
@@ -188,7 +188,7 @@ Para eliminar una base de datos, primero debes switchear a la base de datos con 
 * ```npm run api``` para ejecutar una pequeña API y realizar CRUDs desde la aplicación Postman, importando la colección de requests contenidas en el archivo /api/postman_collection.json
 
 **Archivo .env:**
-Si ya tenes instalado NodeJS, con solo clonar el repositorio y desde la ubicación de la carpeta donde se encuentra el archivo package.json, ejecuta desde una consola el comando npm install para que se instalen las dependencias para que puedas hacer tus propias pruebas.
+Si ya tenes instalado NodeJS, con solo clonar el repositorio y desde la ubicación de la carpeta donde se encuentra el archivo package.json, ejecuta desde una consola el comando ```npm install`` para que se instalen las dependencias y puedas hacer tus propias pruebas.
 Por último, crea un archivo .env (si, solo .env) de texto donde estarán las variables de entorno para conectar con MongoDB Atlas, el contenido del archivo es el siguiente:
 
 Contenido del archivo **.env**:
