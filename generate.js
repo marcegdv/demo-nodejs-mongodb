@@ -1,6 +1,6 @@
-import { mdbSetAtlas, dbAccess } from './api/database.js';
+import { mdbSetAtlasEnvironmentConfig, dbAccess } from './api/database.js';
 
-mdbSetAtlas();
+mdbSetAtlasEnvironmentConfig();
 
 const collection = 'productos';
 

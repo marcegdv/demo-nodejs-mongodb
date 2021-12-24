@@ -4,8 +4,10 @@
     "description": "Pequeño back-end en NodeJS para MongoDB.",
     "main": "",
     "scripts": {
-        "dev": "nodemon mdb.example.js",
-        "api": "nodemon ./api/api.js"
+        "dev": "nodemon ./api/app.js",
+        "api": "nodemon ./api/app.js",
+        "test": "jest",
+        "test-coverage": "jest --coverage"
     },
     "keywords": [],
     "author": "Marcelo Gustavo Daniel Floridia",
@@ -16,5 +18,8 @@
         "dotenv": "^10.0.0",
         "express": "^4.17.1",
         "mongodb": "^4.1.2"
+    },
+    "devDependencies": {
+        "jest": "^27.4.5"
     }
 }
