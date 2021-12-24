@@ -4,23 +4,26 @@ import router from '../routes/routes.js';
 import * as middlewares from '../utils/middlewares.js';
 import { mdbSetAtlas } from '../repository/database.js';
 
+const PATH = process.env.API_PATH;
+const VERSION = process.env.API_VERSION;
+
 mdbSetAtlas();
 
 const server = express();
 server.use(cors());
 server.use(json());
 
-server.get('*', middlewares.onGet);
-server.post('*', middlewares.onPost);
-server.put('*', middlewares.onPut);
-server.delete('*', middlewares.onDelete);
+server.get(`${PATH}/*`, middlewares.onGet);
+server.post(`${PATH}/*`, middlewares.onPost);
+server.put(`${PATH}/*`, middlewares.onPut);
+server.delete(`${PATH}/*`, middlewares.onDelete);
 server.use(middlewares.onRequestInfo);
 
 server.get('/', (req, res) => {
-    res.status(200).send('API v1 service is Up!');
+    res.status(200).send(`API ${VERSION} service running!`);
 });
 
-server.use('/api/v1', router);
+server.use(`${PATH}/${VERSION}`, router);
 
 server.use('*', middlewares.onResponse);
 

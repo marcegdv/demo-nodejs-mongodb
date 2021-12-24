@@ -30,6 +30,8 @@ export const onRequestInfo = (req, res, next) => {
 };
 
 export const onResponse = (req, res, next) => {
-    console.log('Middleware: Response\n', res);
+    console.log('Middleware - Response Info:');
+    console.log('statusMessage:', res.statusMessage);
+    console.log('statuscode:', res.statusCode);
     next();
 };

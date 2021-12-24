@@ -47,25 +47,25 @@ const logResponse = (collection, documents) => {
 }
 
 //---------------------------------------------------------------------------------[ POST ] ----- [ C ]
-app.post('/:collection/insertar', (req, res) => {
+app.post('/:collection/insertar', async (req, res) => {
     const collection = req.params.collection;
     const documents = req.body;
     const response = logResponse(collection, documents)
-    dbAccess('c', collection, documents);
+    await dbAccess('c', collection, documents);
     res.send(response);
 });
-app.post('/insert', (req, res) => {
+app.post('/insert', async (req, res) => {
     const collection = req.header('collection');
     const documents = req.body;
     const response = logResponse(collection, documents)
-    dbAccess('c', collection, documents);
+    await dbAccess('c', collection, documents);
     res.send(response);
 });
-app.post('/insertar', (req, res) => {
+app.post('/insertar', async (req, res) => {
     const collection = req.body.collection;
     const documents = req.body.products;
     const response = logResponse(collection, documents)
-    dbAccess('c', collection, documents);
+    await dbAccess('c', collection, documents);
     res.send(response);
 });
 

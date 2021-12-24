@@ -4,12 +4,12 @@ import * as controllers from '../controller/controller.js';
 const router = express.Router();
 
 router.get('/productos', controllers.getProductos);
-/*
-router.get('/producto', controllers);
-router.get('/producto/:id', controllers);
-router.get('/productos/stock-mayor-igual/:qtty', controllers);
+router.get('/producto', controllers.getProducto);
+router.get('/producto/:id', controllers.getProductoById);
+router.get('/productos/stock-mayor-igual/:qtty', controllers.getProductosStockGTE);
 
-router.post('/:collection/insertar', controllers);
+router.post('/:collection/insertar', controllers.postCollectionInsertar);
+/*
 router.post('/insert', controllers);
 router.post('/insertar', controllers);
 
