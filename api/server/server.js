@@ -22,4 +22,6 @@ server.get('/', (req, res) => {
 
 server.use('/api/v1', router);
 
+server.use('*', middlewares.onResponse);
+
 export default server;

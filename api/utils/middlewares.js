@@ -28,3 +28,8 @@ export const onRequestInfo = (req, res, next) => {
     console.log('Middleware: Info:\n', myInfo);
     next();
 };
+
+export const onResponse = (req, res, next) => {
+    console.log('Middleware: Response\n', res);
+    next();
+};
