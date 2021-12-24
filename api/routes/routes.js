@@ -10,7 +10,7 @@ router.get('/productos/stock-mayor-igual/:qtty', controllers.getProductosStockGT
 
 router.post('/:collection/insertar', controllers.postCollectionInsertar);
 router.post('/insert', controllers.postHeaderInsert);
-router.post('/insertar', controllers.postBodyInsert);
+router.post('/insertar', controllers.postBodyInsertar);
 
 router.put('/producto/:id/set-stock/:qtty', controllers.putProductoByIdStock);
 router.put('/producto/:id/renombrar', controllers.putProductoByIdRename);
