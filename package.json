@@ -5,7 +5,8 @@
     "main": "",
     "scripts": {
         "dev": "nodemon mdb.example.js",
-        "api": "nodemon ./api/api.js"
+        "api": "nodemon ./api/api.js",
+        "apiv1": "nodemon ./api/v1/app.js"
     },
     "keywords": [],
     "author": "Marcelo Gustavo Daniel Floridia",

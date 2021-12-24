@@ -39,31 +39,59 @@ export const getProducto = async (req) => {
 };
 
 export const getProductoById = async (req) => {
-    return await dbAccess('rid', 'productos', req.params.id);
+    return await dbAccess('rid','productos', req.params.id);
 };
 
 export const getProductosStockGTE = async (req) => {
-    return await dbAccess('r', 'productos', { stock: { $gte: Number(req.params.qtty) } });
+    return await dbAccess(
+        'r',
+        'productos',
+        { stock: { $gte: Number(req.params.qtty) } }
+    );
 };
 
 //---------------------------------------------------------------------------------[ PUT ] ----- [ Update ]
 export const putProductoByIdStock = async (req) => {
-    return await dbAccess('uid', 'productos', req.params.id, { $set: { stock: Number(req.params.qtty) } });
+    return await dbAccess(
+        'uid',
+        'productos',
+        req.params.id,
+        { $set: { stock: Number(req.params.qtty) } }
+    );
 };
 
 export const putProductoByIdRename = async (req) => {
-    return await dbAccess('uid', 'productos', req.params.id, { $set: { nombre: req.query.nombre } });
+    return await dbAccess(
+        'uid',
+        'productos',
+        req.params.id,
+        { $set: { nombre: req.query.nombre } }
+    );
 };
 
 export const putProductosAjustarPrecios = async (req) => {
-    return await dbAccess('u', 'productos', {}, { $inc: { precio: Number(req.params.qtty) } });
+    return await dbAccess(
+        'u',
+        'productos',
+        {},
+        { $inc: { precio: Number(req.params.qtty) } }
+    );
 };
 
 export const putProductosRenombrar = async (req) => {
-    return await dbAccess('u', 'productos', { nombre: req.params.producto }, { $set: { nombre: req.query.nombre } });
+    return await dbAccess(
+        'u',
+        'productos',
+        { nombre: req.params.producto },
+        { $set: { nombre: req.query.nombre } }
+    );
 };
 
 //---------------------------------------------------------------------------------[ DELETE ] ----- [ Delete ]
 export const deleteProductoById = async (req) => {
-    return await dbAccess('did', 'productos', req.params.id);
+    return await dbAccess(
+        'did',
+        'productos',
+        req.params.id
+    );
 };
