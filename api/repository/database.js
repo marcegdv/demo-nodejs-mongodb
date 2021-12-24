@@ -326,7 +326,8 @@ const mdbStatusClear = () => {
     mdbStatus.last.action = '';
 }
 
-export const mdbSetAtlas = () => {
+export const mdbSetAtlasEnvironmentConfig = () => {
+    mdbStatusClear();
     const mdbUser = process.env.DB_USER_NAME;
     const mdbPass = process.env.DB_USER_PASSWORD;
     const mdbCluster = process.env.DB_CLUSTER_NAME;
@@ -336,15 +337,17 @@ export const mdbSetAtlas = () => {
     const mdbUrl = 'mongodb+srv://' + mdbUser + ':' + mdbPass + '@' + mdbCluster + '.' + mdbClusterUrl + '/' + mdbDbName + '?' + mdbOptions;
     mdbStatus.client = new MongoClient(mdbUrl);
     mdbStatus.isAtlas = true;
-    mdbStatus.database = 'mercado';
-    mdbStatus.collection = 'productos';
+    mdbStatus.database = '';
+    mdbStatus.collection = '';
     mdbStatus.connection.url = mdbUrl;
 }
-export const mdbSetLocal = () => {
+export const mdbSetLocalDefaultConfig = () => {
+    mdbStatusClear();
     const mdbUrl = 'mongodb://127.0.0.1:27017';
     mdbStatus.client = new MongoClient(mdbUrl);;
     mdbStatus.isAtlas = false;
-    mdbStatus.database = 'unaDataBase';
+    mdbStatus.database = '';
+    mdbStatus.collection = '';
     mdbStatus.connection.url = mdbUrl;
 }
 
@@ -412,8 +415,12 @@ export const dbAccess = async (crud, collection, param1, param2, param3) => {
 }
 
 const test = async () => {
+    //-----[ Usar configuración de archivo .env para conectar con Atlas, o con una db local ]-----
     const usarConfigAtlas = true;
-    usarConfigAtlas ? mdbSetAtlas() : mdbSetLocal();
+    //-----
+    usarConfigAtlas ? mdbSetAtlasEnvironmentConfig() : mdbSetLocalDefaultConfig();
+    //---------------------------------------------------------
+
     try {
         const collection = 'test';
         const product = {

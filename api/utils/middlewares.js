@@ -25,13 +25,17 @@ export const onRequestInfo = (req, res, next) => {
         headers: req.headers,
         body: req.body,
     };
-    console.log('Middleware: Info:\n', myInfo);
+    console.log('Middleware - Request Info:');
+    console.log(myInfo);
     next();
 };
 
 export const onResponse = (req, res, next) => {
+    const info = {
+        statusMessage: res.statusMessage,
+        statuscode: res.statusCode,
+    };
     console.log('Middleware - Response Info:');
-    console.log('statusMessage:', res.statusMessage);
-    console.log('statuscode:', res.statusCode);
+    console.log(info);
     next();
 };

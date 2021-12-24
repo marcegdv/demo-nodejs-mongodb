@@ -2,12 +2,12 @@ import express, { json } from 'express';
 import cors from 'cors';
 import router from '../routes/routes.js';
 import * as middlewares from '../utils/middlewares.js';
-import { mdbSetAtlas } from '../repository/database.js';
+import { mdbSetAtlasEnvironmentConfig } from '../repository/database.js';
 
 const PATH = process.env.API_PATH;
 const VERSION = process.env.API_VERSION;
 
-mdbSetAtlas();
+mdbSetAtlasEnvironmentConfig();
 
 const server = express();
 server.use(cors());
