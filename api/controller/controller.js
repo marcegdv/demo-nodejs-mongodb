@@ -27,6 +27,7 @@ export const getProductoById = async (req, res, next) => {
     } catch (error) {
         console.log(error);
     }
+    next();
 };
 
 export const getProductosStockGTE = async (req, res, next) => {
@@ -36,16 +37,85 @@ export const getProductosStockGTE = async (req, res, next) => {
     } catch (error) {
         console.log(error);
     }
+    next();
 };
 
 export const postCollectionInsertar = async (req, res, next) => {
     try {
-        const collection = req.params.collection;
-        const documents = req.body;
-        const response = logResponse(collection, documents)
-        dbAccess('c', collection, documents);
-        res.send(response);
+        const dbResponse = await services.postCollectionInsertar(req);
+        res.send(dbResponse);
     } catch (error) {
         console.log(error);
     }
+    next();
+};
+
+export const postHeaderInsert = async (req, res, next) => {
+    try {
+        const dbResponse = await services.postHeaderInsert(req);
+        res.send(dbResponse);
+    } catch (error) {
+        console.log(error);
+    }
+    next();
+};
+
+export const postBodyInsert = async (req, res, next) => {
+    try {
+        const dbResponse = await services.postBodyInsert(req);
+        res.send(dbResponse);
+    } catch (error) {
+        console.log(error);
+    }
+    next();
+};
+
+export const putProductoByIdStock = async (req, res, next) => {
+    try {
+        const dbResponse = await services.putProductoByIdStock(req);
+        res.send(dbResponse);
+    } catch (error) {
+        console.log(error);
+    }
+    next();
+};
+
+export const putProductoByIdRename = async (req, res, next) => {
+    try {
+        const dbResponse = await services.putProductoByIdRename(req);
+        res.send(dbResponse);
+    } catch (error) {
+        console.log(error);
+    }
+    next();
+};
+
+export const putProductosAjustarPrecios = async (req, res, next) => {
+    try {
+        const dbResponse = await services.putProductosAjustarPrecios(req);
+        res.send(dbResponse);
+    } catch (error) {
+        console.log(error);
+    }
+    next();
+};
+
+export const putProductosRenombrar = async (req,res, next) => {
+    try {
+        const dbResponse = await services.putProductosRenombrar(req);
+        res.send(dbResponse);
+    } catch (error) {
+        console.log(error);
+    }
+    next();
+};
+
+export const deleteProductoById = async (req, res, next) => {
+    try {
+        const dbResponse = await services.deleteProductoById(req);
+        res.send(dbResponse);
+    } catch (error) {
+        console.log(error);
+    }
+    next();
 };

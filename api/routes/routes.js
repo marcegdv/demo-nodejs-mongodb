@@ -9,16 +9,14 @@ router.get('/producto/:id', controllers.getProductoById);
 router.get('/productos/stock-mayor-igual/:qtty', controllers.getProductosStockGTE);
 
 router.post('/:collection/insertar', controllers.postCollectionInsertar);
-/*
-router.post('/insert', controllers);
-router.post('/insertar', controllers);
+router.post('/insert', controllers.postHeaderInsert);
+router.post('/insertar', controllers.postBodyInsert);
 
-router.put('/producto/:id/set-stock/:qtty', controllers);
-router.put('/producto/:id/renombrar', controllers);
-router.put('/productos/ajustar-precio/:qtty', controllers);
-router.put('/productos/:producto/renombrar', controllers);
+router.put('/producto/:id/set-stock/:qtty', controllers.putProductoByIdStock);
+router.put('/producto/:id/renombrar', controllers.putProductoByIdRename);
+router.put('/productos/ajustar-precio/:qtty', controllers.putProductosAjustarPrecios);
+router.put('/productos/:producto/renombrar', controllers.putProductosRenombrar);
 
-router.delete('/producto/eliminar/:id', controllers);
-*/
+router.delete('/producto/eliminar/:id', controllers.deleteProductoById);
 
 export default router;
