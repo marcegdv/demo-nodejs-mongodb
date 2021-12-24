@@ -60,9 +60,9 @@ export const postHeaderInsert = async (req, res, next) => {
     next();
 };
 
-export const postBodyInsert = async (req, res, next) => {
+export const postBodyInsertar = async (req, res, next) => {
     try {
-        const dbResponse = await services.postBodyInsert(req);
+        const dbResponse = await services.postBodyInsertar(req);
         res.send(dbResponse);
     } catch (error) {
         console.log(error);
